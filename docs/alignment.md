@@ -11,8 +11,8 @@ fazem: **o que ficou de fora?**
 |---|---|---|
 | `CAP-CUSTO` | pending_judgment | — |
 | `CAP-DEMO` | pending_judgment | — |
-| `CAP-ESTADO` | pending_judgment | — |
-| `CAP-MESA` | pending_judgment | — |
+| `CAP-ESTADO` | pending_judgment | `RISK-PRIV-003` |
+| `CAP-MESA` | pending_judgment | `RISK-ACCESS-001`, `RISK-PRIV-003` |
 | `CAP-ORCH` | pending_judgment | — |
 | `CAP-PREFLIGHT` | pending_judgment | — |
 | `CAP-SONDA` | pending_judgment | — |
@@ -21,7 +21,7 @@ fazem: **o que ficou de fora?**
 
 | Componente | Status | Capacidade | Implementa | Coberto por risco |
 |---|---|---|---|---|
-| `CMP-AGENTE-API` | proposed | `CAP-ORCH` | — | não |
+| `CMP-AGENTE-API` | proposed | `CAP-ORCH` | — | sim |
 | `CMP-CORE` | proposed | `CAP-ORCH` | — | não |
 | `CMP-CUSTO` | proposed | `CAP-CUSTO` | — | não |
 | `CMP-DEMO` | proposed | `CAP-DEMO` | — | não |
@@ -32,7 +32,7 @@ fazem: **o que ficou de fora?**
 | `CMP-PREFLIGHT` | proposed | `CAP-PREFLIGHT` | — | não |
 | `CMP-PROMPTS` | proposed | `CAP-ORCH` | — | não |
 | `CMP-PROTOCOL` | proposed | `CAP-ORCH` | — | não |
-| `CMP-PROVEDORES` | proposed | `CAP-ORCH` | — | não |
+| `CMP-PROVEDORES` | proposed | `CAP-ORCH` | — | sim |
 | `CMP-SONDA` | proposed | `CAP-SONDA` | — | não |
 | `CMP-VOO` | proposed | `CAP-ORCH` | — | não |
 
@@ -40,8 +40,8 @@ fazem: **o que ficou de fora?**
 
 | Área | Total | Abertos |
 |---|---|---|
-| access | 3 | 1 |
-| data | 2 | 0 |
+| access | 4 | 2 |
+| data | 3 | 1 |
 | dependencies | 1 | 0 |
 | governance | 15 | 2 |
 | webqa | 1 | 0 |

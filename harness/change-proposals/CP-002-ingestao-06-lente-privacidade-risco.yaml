@@ -1,0 +1,71 @@
+# CP-002 - ING-06: lente de privacidade e risco sobre os elementos novos do alvo
+#
+# Fase COM gate humano (ING-06-GOVERNANCA, gate: human_approval) - executada apos aval
+# registrado em 07/08/2026 pelo dono do repositorio (fluxo /ingerir), mesmo padrao do CP-001.
+# Parametros:
+#   - lente: para CADA elemento novo (capacidades, componentes, superficies, requisitos,
+#     dados do alvo materializado), pergunta-se se a proposta de valor exige tratar dado
+#     pessoal, se alguma capacidade depende dele, se alguma regra decide sobre pessoa
+#     (Art. 20) e quem e dono de qual dado.
+#   - veredito: o alvo e cadeia de ADEQUACAO a LGPD, nao base de titulares. Dado de pessoa
+#     aparece apenas como conteudo transitivo do texto que o operador cola no Painel, e
+#     credencial (chave/token da API da Orquestradora) em localStorage que o proprio export
+#     JSON minimiza. Nao ha cadastro, banco de dados, endpoint publico nem titular-cliente.
+#   - sentinela: os dois riscos que a lente levanta nascem com likelihood e impact =
+#     pending_judgment e status open com due - a promocao (julgamento humano que substitui
+#     o sentinela) e ING-07, com gate humano. A lente nao julga: ela registra o que precisa
+#     de juiz.
+#   - inventario: fields permanece [] e controller.role permanece "none", veredito da
+#     lente: material sem operacao de tratamento de dados de titulares. subject_rights
+#     ficam null por schema enquanto fields estiver vazio.
+#   - parecer: governance/ripd.md e REESCRITO para descrever o sistema real (mesa + cadeia
+#     + harness), e governance/privacy-review.yaml atualiza o escopo nao avaliado para a
+#     nova realidade (a mesa tem superficie local; o texto colado transita a provedor
+#     externo - "transferencia internacional" deixa de ser categoria inexistente).
+#   - alvo intacto: nenhuma escrita em workspace/target/.
+#   - protected paths: nenhum. Schema: ../schemas/change-proposal.schema.json
+schema_version: "1.1"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+proposal:
+  id: CP-002
+  title: "Ingestao ING-06: lente de privacidade e risco sobre os elementos do alvo"
+  author_kind: agent
+  created_at: "2026-08-08T00:10:00Z"
+  status: approved
+
+  capabilities_affected:
+    - CAP-MESA
+    - CAP-ESTADO
+  components_affected:
+    - CMP-MESA
+    - CMP-AGENTE-API
+    - CMP-PROVEDORES
+  paths_affected:
+    - governance/ripd.md
+    - governance/privacy-review.yaml
+    - governance/risk-register.yaml
+  risk_assessment:
+    level: low
+    risks: []
+    rationale: >
+      Lente de privacidade e risco sobre os elementos novos da ingestao, com aval humano.
+      O alvo e lido, nunca escrito. Nenhum julgamento e emitido: os dois riscos registrados
+      nascem com likelihood/impact = pending_judgment e aguardam a promocao ING-07 (gate
+      humano). O inventario permanece vazio por juizo da lente (dado de pessoa e conteudo
+      transitivo do texto colado, incidental; credencial em localStorage nao e dado
+      pessoal). A prosa do parecer e reescrita para descrever o sistema real. Sem mudanca
+      em caminhos protegidos (etapas, pipeline, schemas, politicas) nem nos proibidos do
+      molde. Reversao por checkout do bloco, como no CP-001.
+
+  required_gates:
+    - inventory
+    - metadata-validation
+
+  tests_required:
+    - python ci/validate_all.py
+
+  human_approval_required: false
+  change_mode: pull_request

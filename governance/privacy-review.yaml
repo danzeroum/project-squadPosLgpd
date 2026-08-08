@@ -1,8 +1,8 @@
-# Registro TIPADO do julgamento de privacidade. A prosa é governance/ripd.md.
+# Registro TIPADO do julgamento de privacidade. A prosa e governance/ripd.md.
 #
-# Separar os dois é o que permite fiscalizar sem tentar fiscalizar prosa: o fiscal
-# determinístico não julga legalidade — ele confere que o julgamento existe, é do tipo que o
-# estado do sistema exige, e cobre exatamente este estado (scope_fingerprint).
+# Separar os dois e o que permite fiscalizar sem tentar fiscalizar prosa: o fiscal
+# deterministico nao julga legalidade - ele confere que o julgamento existe, e do tipo que
+# o estado do sistema exige, e cobre exatamente este estado (scope_fingerprint).
 #
 # Atualizar o fingerprint: python ci/audit_lgpd.py --print-fingerprint
 # Schema: harness/schemas/privacy-review.schema.json
@@ -19,13 +19,13 @@ review:
   scope_fingerprint: "sha256:a531ce459c82ed780840dc158358bfe9080b5cddd919a96b00a0f60397fbd7bf"
   issues: []
 
-  # Escopo honesto: categorias do checklist sem material correspondente neste repositório.
-  # Registrar o que não foi avaliado é requisito da revisão — "sem achados" numa categoria que
-  # ninguém olhou é a forma mais silenciosa de laudo falso.
+  # Escopo honesto: categorias do checklist sem material correspondente neste repositorio.
+  # Registrar o que nao foi avaliado e requisito da revisao - "sem achados" numa categoria
+  # que ninguem olhou e a forma mais silenciosa de laudo falso.
   not_assessed:
-    - "Consentimento e preferências (não há frontend nem coleta de titular)"
-    - "Criptografia por campo e KMS (não há banco de dados)"
-    - "Cookies, pixels e scripts de terceiros (não há superfície web publicada)"
-    - "Transferência internacional (não há integração que exporte dado)"
-    - "Modelos de ML e datasets de treino (não há)"
-    - "Job de expurgo (não há dado persistido além da evidência efêmera de auditoria)"
+    - "Consentimento e preferencias de titular: o fluxo recebe texto colado pelo proprio operador, nao ha coleta de titular - consentimento nao e obtido nem e necessario neste desenho"
+    - "Criptografia por campo e KMS (nao ha banco de dados nem persistencia server-side)"
+    - "Cookies, pixels e scripts de terceiros (a mesa e arquivo unico local, sem superficie web publicada)"
+    - "Transferencia internacional estruturada (Art. 33): a unica passagem possivel e o texto colado indo a API da orquestradora - avaliada como incidental e registrada em RISK-PRIV-003 com sentinela pending_judgment; nao ha regime de transferencia operado por este repositorio"
+    - "Modelos de ML e datasets de treino (nao ha)"
+    - "Job de expurgo (nao ha dado persistido alem da evidencia efemera de auditoria, 90 dias; as credenciais vivem em localStorage sob controle do navegador do operador - RISK-ACCESS-001)"

@@ -1,132 +1,133 @@
-# Parecer de Proporcionalidade — proteção de dados
+# Parecer de Proporcionalidade - protecao de dados
 
-> **Tipo de julgamento:** Parecer de Proporcionalidade (não RIPD completo).
-> **Por quê:** o sistema não trata dados de titulares. O tratamento possível é **incidental e
-> efêmero**, restrito a evidência de auditoria. Art. 38 da LGPD exige RIPD quando há tratamento
-> que possa gerar risco às liberdades civis e aos direitos fundamentais dos titulares; aqui o
-> registro proporcional é este parecer. O tipo exigido **não é escolha**: `ci/audit_lgpd.py`
-> deriva-o de `governance/data-inventory.yaml` e reprova se o registrado não corresponder.
+> **Tipo de julgamento:** Parecer de Proporcionalidade (nao RIPD completo).
+> **Por que:** o sistema nao trata dados de titulares. O tratamento possivel e **incidental e
+> efemero**, restrito a conteudo transitivo colado pelo proprio operador e a evidencia de
+> auditoria. Art. 38 da LGPD exige RIPD quando ha tratamento que possa gerar risco as
+> liberdades civis e aos direitos fundamentais dos titulares; aqui o registro proporcional
+> e este parecer. O tipo exigido **nao e escolha**: `ci/audit_lgpd.py` o deriva de
+> `governance/data-inventory.yaml` e reprova se o registrado nao corresponder.
 >
-> Produzido pela skill `/revisao-lgpd`. O registro tipado — fingerprint, issues, escopo não
-> avaliado — está em `governance/privacy-review.yaml`; este arquivo é a prosa.
+> Produzido pela skill `/revisao-lgpd` (agente `harness/agents/privacy/`), na lente ING-06 da
+> ingestao do alvo (CP-002). O registro tipado - fingerprint, issues, escopo nao avaliado -
+> esta em `governance/privacy-review.yaml`; este arquivo e a prosa.
 
 ## 1. Papel do sistema
 
-Carcaça de projeto consumidor com uma harness declarativa de governança. O negócio de exemplo
-(`src/project/pricing.py`, `src/project/ports.py`) opera sobre `sku`, `quantidade` e
-`preco_centavos` — nenhum dado de pessoa natural. A harness orquestra o consumo da WebQA Suite
-como padrão externo; ela não persiste cadastro, não expõe endpoint público
-(`classification.internet_exposed: false`) e não possui banco de dados.
+Derivado de governanca de um alvo: a **cadeia multagente de adequacao a LGPD**
+(`danzeroum/squadPosLgpd`): a Mesa de Orquestracao A2A (arquivo unico HTML/JS que roda no
+navegador do operador, sem servidor), o orquestrador Python (`src/orquestrador_a2a.py`) e a
+harness de governanca deste repositorio (fiscais, WebQA Suite como padrao externo, registro
+de riscos).
 
-**Papel LGPD:** nenhum (`controller.role: none`). Não é controlador nem operador de dados de
-titulares. Onde há dado pessoal, ele é de colaborador do próprio projeto, não de titular-cliente.
+A proposta de valor **nao exige tratar dado pessoal**: o negocio e documentacao de
+adequacao (envelopes entre agentes, documentos de privacidade, artefatos `CHK-*`) - nao
+cadastro de pessoas naturais. O sistema nao coleta titular, nao mantem banco de dados, nao
+expoe endpoint publico (`classification.internet_exposed: false`).
 
-**Escopo desta revisão:** todo o repositório — metadados de negócio, arquitetura, design,
-governança, código de `src/`, testes, configuração declarativa de QA e workflows de CI. O que
-não foi avaliado está listado em `privacy-review.yaml:not_assessed`.
+**Papel LGPD:** nenhum (`controller.role: none`). Nao e controlador nem operador de dados de
+titulares. Dado de pessoa natural aparece somente como **conteudo transitivo**: o texto de
+documentacao de privacidade que o operador cola no Painel da Mesa (pode conter PII de
+terceiros no corpo daquele texto), e como identificadores de colaborador do proprio projeto.
+
+**Escopo desta revisao:** todo o repositorio - metadados de negocio, arquitetura, design,
+governanca, o que a colheita ING-02 registrou do alvo, e a configuracoes de CI. O que nao
+foi avaliado esta listado em `privacy-review.yaml:not_assessed`.
 
 ## 2. Dados incidentais capturados
 
-| Vetor | Dado possível | Natureza |
+| Vetor | Dado possivel | Natureza |
 |---|---|---|
-| `harness/runs/` | corpo de resposta do alvo auditado em modo `passive` — pode conter dado pessoal do sistema auditado | incidental, efêmero |
-| Artifacts do CI (`harness/reports/`) | laudos derivados da evidência acima | incidental, efêmero |
-| `project.yaml:business.stakeholders` | identificação dos responsáveis pelo projeto | dado pessoal de colaborador |
-| `tests/qa/escopo-autorizado.yaml` | `proof_of_possession.reference` pode nomear quem autorizou | dado pessoal de colaborador |
-| Metadados de commit | nome e e-mail do autor | inerente ao Git, fora do controle da aplicação |
-| **Artifact e log do CI em repositório público** | os laudos acima, baixáveis por qualquer usuário logado | incidental, efêmero, **público** |
+| Documentacao de privacidade colada no Painel | PII de terceiros eventualmente presente no texto livre (que transita para a API da orquestradora, incluindo provedor externo) | incidental, transitivo (RAM + localStorage) |
+| Chave e token da API da orquestradora (`localStorage`) | credencial de integracao - **nao e dado pessoal**; a exportacao JSON e declarada no alvo como saindo **sem** eles | segredo do operador |
+| Configuracao do ciclo (links dos 5 chats, modelo, base-URL) | configuracoes, sem pessoa | configuracao |
+| `harness/runs/` | corpo de resposta do alvo auditado em modo `passive` - eventual dado pessoal do sistema auditado | incidental, efemero |
+| Artifacts do CI (`harness/reports/`) | laudos derivados da evidencia acima | incidental, efemero |
+| `project.yaml:business.stakeholders` | identificacao dos responsaveis pelo projeto (handles de conta) | dado pessoal de colaborador |
+| Metadados de commit | nome e e-mail do autor | inerente ao Git, fora do controle da aplicacao |
+| **Artifact e log do CI em repositorio publico** | os laudos acima, baixaveis por qualquer usuario | incidental, efemero, **publico** |
 
-Nenhum desses é dado sensível (Art. 5º, II). Nenhum é coletado de titular-cliente. A varredura
-determinística de `ci/audit_lgpd.py` sobre a superfície declarada em `harness/stages.yaml`
-retorna zero identificadores com forma de dado pessoal no código e nos metadados.
+Nenhum desses e dado sensivel (Art. 5, II). Nenhum e coletado de titular-cliente. A varredura
+deterministica de `ci/audit_lgpd.py` sobre a superficie declarada em `harness/stages.yaml`
+retorna zero identificadores com forma de dado pessoal fora do inventario.
 
 ## 3. Controles proporcionais
 
-Aplicados na hierarquia **não coletar > mascarar na escrita > reter pouco > criptografar** —
-criptografia é segunda linha para dado já minimizado, não a primeira resposta.
+Aplicados na hierarquia **nao coletar > mascarar na escrita > reter pouco > criptografar** -
+criptografia e segunda linha para dado ja minimizado, nao a primeira resposta.
 
-1. **Não coletar (primeira linha, e mora fora deste repositório).** A sanitização dos achados é
-   responsabilidade da WebQA Suite, e o contrato de consumo já a declara: os achados chegam
-   sanitizados (`harness/schemas/report.schema.json`). Este projeto não pode afrouxar essa
-   régua, porque não a possui — é a consequência prática do ADR-001.
-2. **A sanitização mora fora, e isso é uma dependência declarada.** A barreira entre a
-   evidência e o espaço público é a sanitização da WebQA Suite — código que este projeto
-   consome e não controla. É consequência aceita do ADR-001 (a régua mora fora), mas precisa
-   estar escrita: se aquela sanitização falhar, o `harness/reports/` de um repositório público
-   é o vetor. Mitiga hoje: `harness/runs/` (evidência bruta) **nunca** sobe como artifact —
-   os dois uploads apontam só para `harness/reports/`, e os laudos citam identificadores de
-   código, nunca valores.
-3. **Não coletar (segunda linha, local).** Os modos que geram tráfego contra um alvo real
-   (`load`, `active_discovery`) são `human_only` e vivem em job segregado com aprovação
-   (`harness/harness.yaml`, `.github/workflows/qa.yml`). Agente nenhum dispara sondagem.
-4. **Reter pouco.** `evidence_retention_days: 90` em `project.yaml` e `retention_days: 90` em
-   `tests/qa/campanha.yaml`, **e `retention-days: 90` nos dois uploads de artifact**. A
-   igualdade entre os três é fiscalizada — divergência silenciosa
-   entre duas declarações de retenção seria uma mentira de retenção.
-5. **Não versionar — com uma exceção declarada e minimizada por construção (CP-026/ADR-021).**
-   `harness/runs/`, `harness/reports/` e `harness/state/` continuam gitignored: a evidência bruta
-   não entra no histórico do Git, de onde não se apaga.
-
-   A **única** exceção é `harness/state/ledger.jsonl`, versionado a partir do CP-026. A medida de
-   proteção não foi afrouxada; ela foi transferida do `.gitignore` para o **schema**. O
-   `ledger.schema.json` não possui nenhuma propriedade textual livre (`additionalProperties: false`;
-   cada campo é hash, SHA, ID opaco de run, enum, timestamp, ID de CP ou referência canônica de
-   artefato). Não existe campo onde nome, e-mail, login, URL de perfil, texto de prompt ou conteúdo
-   de laudo caibam — a minimização é **estrutural**, não uma promessa de quem escreve.
-
-   Atribuição humana, quando indispensável, usa `actor_ref` **pseudonimizado**
-   (`^anon:[0-9a-f]{16}$`), com a tabela de reidentificação **fora deste repositório**, sob
-   controle separado. Versioná-la aqui recriaria o problema que a pseudonimização resolve.
-
-   O ledger é deliberadamente **mais estrito** que `business.stakeholders`, que aceita handle. A
-   razão está nesta mesma frase: o ledger é append-only e versionado — *de onde não se apaga*.
-   Minimização suficiente num arquivo editável vira exposição **permanente** num histórico
-   imutável.
-6. **Minimizar identificação de colaborador.** `business.stakeholders` usa identificador de
-   conta (handle) em vez de nome civil e e-mail pessoal. Um handle já satisfaz a finalidade
-   (saber a quem escalar), e coletar menos é sempre a primeira opção.
-7. **Registro das operações sempre em dia.** `governance/data-inventory.yaml` é fiscalizado a
-   cada push; um campo com forma de dado pessoal fora dele reprova o CI (Art. 37).
+1. **Nao coletar (primeira linha).** A cadeia nao cria cadastro nem coleta de titular; o
+   unico texto que existe e o que o operador cola deliberadamente, para o proprio ciclo de
+   adequacao. Nao ha coleta a minimizar alem disso.
+2. **Minimizar segredo.** Chave e token ficam apenas em `localStorage` no navegador do
+   operador, e o JSON de exportacao sai sem eles - minimizacao declarada no alvo. A janela
+   restante (segredo no cliente, superficie XSS/device) e registrada em `RISK-ACCESS-001`
+   com niveis em `pending_judgment`: a lente de ingestao nao julga; ING-07 promove.
+3. **Nao versionar - com a excecao declarada.** `workspace/` e area de trabalho efemera do
+   processo de adocao; `harness/runs/`, `harness/reports/` e `harness/state/` sao
+   gitignored: a evidencia bruta nao entra no history do Git, de onde nao se apaga. A unica
+   excecao e `harness/state/ledger.jsonl`, versionado a partir do CP-026: o schema (`additionalProperties: false`)
+   so admite hashes, SHAs, IDs opacos, enums, timestamps e refs canonicas - nao existe campo
+   onde nome, e-mail, login ou texto caibam. A criacao humana, quando indispensavel, usa
+   `actor_ref` pseudonimizado (`^anon:[0-9a-f]{16}$`), com a tabela de reidentificacao fora
+   deste repositorio.
+4. **Reter pouco.** `evidence_retention_days: 90` em `project.yaml`, `retention_days: 90` em
+   `tests/qa/campanha.yaml` e `retention-days: 90` nos dois uploads de artifact - a
+   igualdade entre os tres e fiscalizada (`check_evidence_retention`). Divergir e mentira
+   de retencao.
+5. **Sanitizacao mora fora.** Os achados chegam sanitizados pela WebQA Suite
+   (`harness/schemas/report.schema.json`); este projeto nao pode afrouxar regra que nao possui
+   (consequencia do ADR-001) e registra essa dependencia como vetor de risco conhecido.
+6. **Registro das operacoes sempre em dia.** `governance/data-inventory.yaml` e fiscalizado
+   a cada push: a varredura de tratamento-sombra cobre todas as superficies declaradas em
+   `harness/stages.yaml`, incluindo os metadados novos da ingestao (capacidades,
+   componentes, interfaces, superficies de UI). Se o alvo passou a tratar campo com forma
+   de dado pessoal, o CI reprova - nao inventa isencao.
+7. **Encarregado (Art. 41):** nao indicado, dispensado enquanto `controller.role` for
+   `none` - e o parecer registra que o primeiro campo no inventario muda o tipo de
+   julgamento para RIPD completo, passa a exigir encarregado e os endpoints do Art. 18
+   (tres travas disparam juntas).
 
 ## 4. Controles descartados, com justificativa
 
-- **Criptografia em repouso de `harness/runs/`** — desproporcional. A evidência já chega
-  sanitizada pelo padrão externo, é efêmera (90 dias), não versionada e não contém dado de
-  titular-cliente. Introduzir KMS e rotação de chave numa carcaça de projeto adicionaria
-  superfície de gestão de segredo sem reduzir risco real. Reavaliar se o inventário deixar de
-  ser vazio ou se o modo `passive` passar a apontar para alvo de produção com dado pessoal.
-- **Endpoints de direitos do titular (Art. 18)** — não aplicável. Não há titular: o sistema não
-  mantém base de dados pessoais. O schema do inventário permite `null` nos quatro direitos
-  **enquanto** `fields` estiver vazio, e passa a cobrá-los no primeiro campo inventariado.
-- **RIPD completo (8 seções)** — desproporcional agora, e o próprio fiscal recusaria: com
-  `controller.role: none` o tipo exigido é este parecer. Vira obrigatório automaticamente
-  quando o papel mudar.
-- **Plano formal de resposta a incidente (Art. 48)** — desproporcional para `controller.role:
-  none`. Não há base de titulares a notificar, e a ANPD não é destinatária de incidente que
-  não envolva dado pessoal de titular. O cenário concreto considerado e descartado: runner de
-  CI comprometido exfiltrando evidência durante um job `passive`. Mitigado pela retenção de 90
-  dias agora fiscalizada em três lugares, por `harness/runs/` nunca virar artifact, e pelos
-  modos de rede serem `human_only` em job segregado. **Gatilho de reavaliação:** o primeiro
-  campo em `data-inventory.yaml`, ou o alvo de `tests/qa/config.yaml` deixar de ser ambiente
-  de teste — ambos alteram o `scope_fingerprint` e forçam refazer este parecer.
-- **Anonimização/pseudonimização de metadado de commit** — fora do alcance da aplicação e
-  contrário à rastreabilidade de autoria que a governança do repositório exige (Art. 7º, IX,
-  com finalidade legítima e expectativa clara de quem contribui).
+- **Criptografia por campo / KMS** - desproporcional: nao ha banco de dados; a evidencia e
+  efemera (90 dias) e sanitizada pelo padrao externo; o unico segredo vive em `localStorage`
+  do navegador do operador, fora do alcance de KMS de repositorio. Reavaliar se o inventario
+  deixar de ser vazio.
+- **Endpoints de direitos do titular (Art. 18)** - nao aplicado: nao ha titular. O schema
+  permite `null` nos quatro direitos **enquanto** `fields` estiver vazio e passa a cobra-los
+  no primeiro campo inventariado.
+- **RIPD completo (8 secoes)** - desproporcional hoje, e o proprio fiscal recusaria:
+  `controller.role: none` exige este parecer. Vira obrigatorio automaticamente na mudanca
+  do papel.
+- **Plano formal de resposta a incidente (Art. 48)** - desproporcional para `role: none`:
+  nao ha base de titulares a notificar. Cenarios considerados (runner de CI comprometido
+  exfiltrando evidencia em job `passive`) seguem mitigados por retencao de 90 dias
+  fiscalizada, por `harness/runs/` nunca virar artifact e pelos modos de rede serem
+  `human_only` em job segregado.
+- **Regime formal de transferencia internacional (Art. 33)** - o texto colado pode transitar
+  pela API da orquestradora (provedor externo): fluxo incidental do operador, sem
+  regularidade de tratamento, registrado em `RISK-PRIV-003` (`pending_judgment`). Gatilho
+  de reavaliacao: o transito virar fluxo do produto.
 
 ## 5. Riscos residuais
 
 | Risco | Severidade | Tratamento |
 |---|---|---|
-| Auditoria `passive` contra alvo de produção capturar dado pessoal de terceiro em `harness/runs/` | Médio | Sanitização no padrão externo + retenção de 90 dias + evidência não versionada. Reabrir este parecer se o alvo declarado em `tests/qa/config.yaml` deixar de ser ambiente de teste — a mudança daquele arquivo altera o `scope_fingerprint` e força a reavaliação. |
-| Laudo em artifact de repositório **público**, se a sanitização do padrão externo falhar | Baixo | `harness/runs/` nunca sobe; laudos citam identificadores, não valores; retenção de 90 dias fiscalizada por `ci/audit_lgpd.py::check_evidence_retention`. Reavaliar se o repositório mudar de visibilidade ou se `harness/runs/` entrar em algum upload. |
-| Consumidor da carcaça adicionar PII sem inventariar | Médio | `RISK-PRIV-001`, fiscalizado por `ci/audit_lgpd.py` (varredura de tratamento-sombra) a cada push. |
-| Este parecer envelhecer em relação ao sistema | Médio | `RISK-PRIV-002`: `scope_fingerprint` em `privacy-review.yaml` é conferido a cada push; divergiu, o CI reprova. |
+| Texto de doc colado com eventual PII transitando a provedor externo, sem clausulas formais (Art. 33) | `pending_judgment` - `RISK-PRIV-003`, julgado em ING-07 | Incidencia pontual e opcional do proprio operador; sem fluxo regular de titular. Sem o julgamento humano, nao ha fechamento. |
+| Credencial da orquestradora em `localStorage` (superficie XSS/device) | `pending_judgment` - `RISK-ACCESS-001`, julgado em ING-07 | Minimizacao declarada pelo alvo (export sem chave/token); sem fiscal do lado deste repositorio. |
+| Auditoria `passive` contra alvo de producao capturar PII em `harness/runs/` | Medio | Sanitizacao no padrao externo + retencao de 90 dias + evidencia nao versionada. Reabrir o parecer se o alvo de `tests/qa/config.yaml` deixar de ser ambiente de teste. |
+| Laudo em artifact de repositorio publico, se a sanitizacao do padrao externo falhar | Baixo | `harness/runs/` nunca vira artifact; laudos citam identificadores, nao valores. |
+| PII entrando sem inventariar | Medio | `RISK-PRIV-001`: varredura de tratamento-sombra a cada push. |
+| Este parecer envelhecer em relacao ao sistema | Medio | `RISK-PRIV-002`: `scope_fingerprint` conferido a cada push. |
 
-## 6. Aprovação
+## 6. Aprovacao
 
-- Encarregado (DPO): _não indicado — dispensado enquanto `controller.role` for `none` (Art. 41)_
+- Encarregado (DPO): _nao indicado - dispensado enquanto `controller.role` for `none`
+  (Art. 41)_
 - Revisor de Engenharia: ______________________  Data: ____/____/________
 
-> Este parecer cobre o estado do repositório identificado pelo `scope_fingerprint` registrado em
-> `governance/privacy-review.yaml`. Mudou o escopo, o parecer deixa de falar deste sistema e
-> `ci/audit_lgpd.py` reprova até que ele seja refeito.
+> Este parecer e o registro tipado que cobre o estado identificado pelo `scope_fingerprint`.
+> Mudou o escopo (primeiro campo no inventario, mudanca em `target.lock` ou
+> `tests/qa/config.yaml`, campo com forma de PII fora do inventario), o parecer deixa de
+> falar deste sistema e `ci/audit_lgpd.py` reprova ate que ele seja refeito.

@@ -3,8 +3,8 @@
 # controls[] são referências TIPADAS — nem todo controle é arquivo local.
 schema_version: "1.0"
 metadata_version: "1.0"
-source_of_truth: true
-generated_from: null
+source_of_truth: false
+generated_from: "ingest.yaml#ING-06-GOVERNANCA"
 
 risks:
   - id: RISK-WEBQA-001
@@ -509,5 +509,66 @@ risks:
         ref: harness/change-proposals/CP-000-o-derivado-nasce-sem-codigo-proprio.yaml
       - kind: local_path
         ref: architecture/adr/ADR-019-vermelho-durante-mudanca-e-mapa.md
+
+  # ------------------------------------------------------------------------------------
+  # Lente ING-06 (CP-002): riscos que a lente levantou sobre o alvo materializado. Os
+  # niveis nascem como sentinela pending_judgment por construcao - a lente nao julga; a
+  # promocao (ING-07, gate humano) substitui os sentinelas por julgamento humano. Risco
+  # aberto tem due obrigatoria por schema.
+  # ------------------------------------------------------------------------------------
+
+  - id: RISK-PRIV-003
+    area: data
+    description: "Documentacao de privacidade colada pelo operador pode conter dado pessoal de terceiros no texto livre, e o texto transita para a API da orquestradora (provedor externo, DeepSeek por padrao) - transferencia internacional de eventual dado pessoal (Art. 33) sem salvaguarda formal declarada."
+    likelihood: pending_judgment
+    impact: pending_judgment
+    treatment: mitigate
+    owner: security_owner
+    status: open
+    due: "2026-08-14"
+    related:
+      - CAP-MESA
+      - CAP-ESTADO
+    controls:
+      - kind: local_path
+        ref: governance/ripd.md
+      - kind: local_path
+        ref: governance/privacy-review.yaml
+      - kind: local_path
+        ref: harness/pipeline/ingest.yaml
+      - kind: local_path
+        ref: harness/agents/privacy/AGENT.md
+    derived_from:
+      repo: danzeroum/squadPosLgpd
+      sha: "c5686ae4d6e5f0b9670cf8706b84241ba031a2a1"
+      path: "mesa/README.md"
+      section: "Como operar"
+
+  - id: RISK-ACCESS-001
+    area: access
+    description: "Credencial da API da orquestradora (chave e token) persistida em localStorage no navegador do operador da mesa: segredo no cliente com superficie de exposicao (XSS/device), e o codigo do alvo fica em workspace/ que a varredura dos fiscais exclui por design - sem fiscal local cobrindo essa janela."
+    likelihood: pending_judgment
+    impact: pending_judgment
+    treatment: mitigate
+    owner: security_owner
+    status: open
+    due: "2026-08-14"
+    related:
+      - CAP-MESA
+      - CMP-AGENTE-API
+      - CMP-PROVEDORES
+    controls:
+      - kind: local_path
+        ref: governance/ripd.md
+      - kind: local_path
+        ref: harness/agents/privacy/AGENT.md
+      - kind: local_path
+        ref: harness/policies/ingestao.md
+    derived_from:
+      repo: danzeroum/squadPosLgpd
+      sha: "c5686ae4d6e5f0b9670cf8706b84241ba031a2a1"
+      path: "mesa/README.md"
+      section: "Como operar"
+
 
 risk_exemptions: []
