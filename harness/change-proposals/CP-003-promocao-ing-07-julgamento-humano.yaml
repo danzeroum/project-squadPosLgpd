@@ -1,0 +1,56 @@
+# CP-003 - Promocao ING-07: julgamento humano substitui os sentinelas da ingestao
+#
+# Fase COM gate humano (ING-07-PROMOCAO): substituir pending_judgment por julgamento
+# humano. Matriz aprovada em 08/08/2026 pelo dono do repositorio (fluxo /ingerir):
+#   - CAP-ORCH high, CAP-MESA high, CAP-ESTADO medium, CAP-CUSTO low, CAP-PREFLIGHT
+#     medium, CAP-SONDA medium, CAP-DEMO low (business/capabilities.yaml);
+#   - RISK-PRIV-003 e RISK-ACCESS-001: likelihood medium, impact medium
+#     (governance/risk-register.yaml).
+# "Promover e substituir o sentinela, nao redeclarar o cabecalho" (ingestao.md): os dois
+# documentos voltam a source_of_truth: true so depois de nenhum pending_judgment restar.
+# Schema: ../schemas/change-proposal.schema.json
+schema_version: "1.1"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+proposal:
+  id: CP-003
+  title: "Promocao ING-07: julgamento humano substitui os sentinelas da ingestao"
+  author_kind: agent
+  created_at: "2026-08-08T00:40:00Z"
+  status: approved
+
+  capabilities_affected:
+    - CAP-ORCH
+    - CAP-MESA
+    - CAP-ESTADO
+    - CAP-CUSTO
+    - CAP-PREFLIGHT
+    - CAP-SONDA
+    - CAP-DEMO
+  components_affected: []
+  paths_affected:
+    - business/capabilities.yaml
+    - governance/risk-register.yaml
+  risk_assessment:
+    level: low
+    risks: []
+    rationale: >
+      Julgamento humano registrado no fluxo /ingerir em 08/08/2026, com a matriz
+      apresentada e aprovada item a item. Os 7 risk_level das capacidades e os pares
+      likelihood/impact dos 2 riscos deixam de ser sentinela. Nenhum julgamento novo e
+      inventado: cada valor foi proposto e aprovado pela mesma pessoa que aprovou as fases
+      anteriores. Sem mudanca em caminhos protegidos alem do fluxo declarado (governance/
+      e business/ tocam metadado ja regido pelo pipeline; a promocao e o ato previsto em
+      ING-07, gate humano). Reversao por checkout do bloco.
+
+  required_gates:
+    - inventory
+    - metadata-validation
+
+  tests_required:
+    - python ci/validate_all.py
+
+  human_approval_required: false
+  change_mode: pull_request

@@ -1,7 +1,7 @@
 schema_version: '1.0'
 metadata_version: '1.0'
-source_of_truth: false
-generated_from: harness/pipeline/ingest.yaml#ING-04-NEGOCIO
+source_of_truth: true
+generated_from: null
 capabilities:
 - id: CAP-ORCH
   name: Orquestracao A2A da cadeia de adequacao LGPD
@@ -9,7 +9,7 @@ capabilities:
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
-  risk_level: pending_judgment
+  risk_level: high
   source_paths:
   - workspace/target/mesa/prompt-orq.mjs
   - workspace/target/mesa/src/agente-api.js
@@ -49,7 +49,7 @@ capabilities:
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
-  risk_level: pending_judgment
+  risk_level: high
   source_paths:
   - workspace/target/mesa/Mesa-v1.html
   - workspace/target/mesa/README.md
@@ -81,7 +81,7 @@ capabilities:
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
-  risk_level: pending_judgment
+  risk_level: medium
   source_paths:
   - workspace/target/mesa/src/engine.js
   test_paths:
@@ -97,7 +97,7 @@ capabilities:
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
-  risk_level: pending_judgment
+  risk_level: low
   source_paths:
   - workspace/target/mesa/custo.mjs
   test_paths:
@@ -113,7 +113,7 @@ capabilities:
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
-  risk_level: pending_judgment
+  risk_level: medium
   source_paths:
   - workspace/target/mesa/preflight.mjs
   test_paths:
@@ -129,7 +129,7 @@ capabilities:
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
-  risk_level: pending_judgment
+  risk_level: medium
   source_paths:
   - workspace/target/mesa/sonda-corpo.mjs
   test_paths:
@@ -145,7 +145,7 @@ capabilities:
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
-  risk_level: pending_judgment
+  risk_level: low
   source_paths:
   - workspace/target/mesa/src/demo.js
   test_paths:

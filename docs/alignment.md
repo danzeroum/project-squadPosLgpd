@@ -9,13 +9,13 @@ fazem: **o que ficou de fora?**
 
 | Capacidade | risk_level | Riscos que a cobrem |
 |---|---|---|
-| `CAP-CUSTO` | pending_judgment | — |
-| `CAP-DEMO` | pending_judgment | — |
-| `CAP-ESTADO` | pending_judgment | `RISK-PRIV-003` |
-| `CAP-MESA` | pending_judgment | `RISK-ACCESS-001`, `RISK-PRIV-003` |
-| `CAP-ORCH` | pending_judgment | — |
-| `CAP-PREFLIGHT` | pending_judgment | — |
-| `CAP-SONDA` | pending_judgment | — |
+| `CAP-CUSTO` | low | — |
+| `CAP-DEMO` | low | — |
+| `CAP-ESTADO` | medium | `RISK-PRIV-003` |
+| `CAP-MESA` | high | `RISK-ACCESS-001`, `RISK-PRIV-003` |
+| `CAP-ORCH` | high | `RISK-PRIV-003` |
+| `CAP-PREFLIGHT` | medium | — |
+| `CAP-SONDA` | medium | — |
 
 ## Componentes
 
