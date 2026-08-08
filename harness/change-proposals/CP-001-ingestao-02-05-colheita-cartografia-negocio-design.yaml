@@ -1,0 +1,78 @@
+# CP-001 — ING-02..05: colheita, cartografia, negócio e design da ingestão do alvo
+#
+# Bloco coeso das fases SEM gate de ingestão (ING-02-COLHEITA, ING-03-CARTOGRAFIA,
+# ING-04-NEGOCIO, ING-05-DESIGN) executado de uma vez por change-proposal única
+# (ingerir: "uma por bloco coeso de fases sem gate"). Parâmetros:
+#   · proveniência: derived_from com sha IDÊNTICO a target.lock (c5686ae…); path relativo
+#     à raiz do alvo, sem prefixo workspace/target/.
+#   · julgamento: risk_level sai como pending_judgment e capabilities.yaml se declara
+#     source_of_truth: false com generated_from — a promoção é ING-07, gate humano.
+#   · fronteira de componente: proposta a partir do inventário (ci/inventory_code.py),
+#     componente menor por decisão (ADR-010).
+#   · alvo intacto: nenhuma escrita em workspace/target/.
+#
+# Aprovação registrada em 07/08/2026 pelo dono do repositório, para o bloco de fases.
+# Schema: ../schemas/change-proposal.schema.json
+schema_version: "1.1"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+proposal:
+  id: CP-001
+  title: "Ingestão ING-02..05: colheita, cartografia, negócio e design do alvo com proveniência ancorada"
+  author_kind: agent
+  created_at: "2026-08-07T22:10:00Z"
+  status: approved
+
+  capabilities_affected:
+    - CAP-ORCH
+    - CAP-MESA
+    - CAP-ESTADO
+    - CAP-CUSTO
+    - CAP-PREFLIGHT
+    - CAP-SONDA
+    - CAP-DEMO
+  components_affected:
+    - CMP-CORE
+    - CMP-PROTOCOL
+    - CMP-PILOTO
+    - CMP-PROVEDORES
+    - CMP-ORQUESTRADORA
+    - CMP-VOO
+    - CMP-AGENTE-API
+    - CMP-PROMPTS
+    - CMP-MESA
+    - CMP-DEMO
+    - CMP-CUSTO
+    - CMP-PREFLIGHT
+    - CMP-SONDA
+    - CMP-ORQ-PY
+  paths_affected:
+    - harness/state/harvest.json
+    - architecture/components.yaml
+    - architecture/interfaces.yaml
+    - business/capabilities.yaml
+    - business/requirements/backlog.yaml
+    - design/ui-surfaces.yaml
+
+  risk_assessment:
+    level: low
+    risks: []
+    rationale: >
+      Fechamento das fases de ingestão sem gate humano, no derivado ainda incubating.
+      O alvo é lido, nunca escrito. Nenhum julgamento é emitido: risco, finalidade e
+      base legal ficam pending_judgment até ING-07 (promoção com gate). RFC coesa e
+      revertível: qualquer divergência que o fiscal acuse reverte por checkout deste
+      bloco. Sem mudança em caminhos protegidos (etapas, pipeline, schemas, políticas)
+      nem nos "proibido" do molde. Aprovação humana registrada em 07/08/2026.
+
+  required_gates:
+    - inventory
+    - metadata-validation
+
+  tests_required:
+    - python ci/validate_all.py
+
+  human_approval_required: false
+  change_mode: pull_request

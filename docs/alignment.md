@@ -9,11 +9,32 @@ fazem: **o que ficou de fora?**
 
 | Capacidade | risk_level | Riscos que a cobrem |
 |---|---|---|
+| `CAP-CUSTO` | pending_judgment | — |
+| `CAP-DEMO` | pending_judgment | — |
+| `CAP-ESTADO` | pending_judgment | — |
+| `CAP-MESA` | pending_judgment | — |
+| `CAP-ORCH` | pending_judgment | — |
+| `CAP-PREFLIGHT` | pending_judgment | — |
+| `CAP-SONDA` | pending_judgment | — |
 
 ## Componentes
 
 | Componente | Status | Capacidade | Implementa | Coberto por risco |
 |---|---|---|---|---|
+| `CMP-AGENTE-API` | proposed | `CAP-ORCH` | — | não |
+| `CMP-CORE` | proposed | `CAP-ORCH` | — | não |
+| `CMP-CUSTO` | proposed | `CAP-CUSTO` | — | não |
+| `CMP-DEMO` | proposed | `CAP-DEMO` | — | não |
+| `CMP-MESA` | proposed | `CAP-MESA` | — | não |
+| `CMP-ORQ-PY` | proposed | `CAP-ORCH` | — | não |
+| `CMP-ORQUESTRADORA` | proposed | `CAP-ORCH` | — | não |
+| `CMP-PILOTO` | proposed | `CAP-ORCH` | — | não |
+| `CMP-PREFLIGHT` | proposed | `CAP-PREFLIGHT` | — | não |
+| `CMP-PROMPTS` | proposed | `CAP-ORCH` | — | não |
+| `CMP-PROTOCOL` | proposed | `CAP-ORCH` | — | não |
+| `CMP-PROVEDORES` | proposed | `CAP-ORCH` | — | não |
+| `CMP-SONDA` | proposed | `CAP-SONDA` | — | não |
+| `CMP-VOO` | proposed | `CAP-ORCH` | — | não |
 
 ## Riscos por área
 

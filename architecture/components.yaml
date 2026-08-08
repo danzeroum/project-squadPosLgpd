@@ -1,17 +1,408 @@
-# Componentes técnicos ligados a capacidades. Fecha a rastreabilidade
-# capacidade → componente → código → teste.
-# Schema: harness/schemas/components.schema.json
-#
-# Vazia por construção (CP-000): o mapa de componentes nasce na ingestão do alvo
-# (proveniência em derived_from, sem julgamento de fronteira automático — ADR-010).
-schema_version: "1.0"
-metadata_version: "1.0"
+schema_version: '1.0'
+metadata_version: '1.0'
 source_of_truth: true
 generated_from: null
-
-components: []
-
-# Arquivos sob as raízes de código que deliberadamente não pertencem a componente algum.
-# Isenção que não casa arquivo nenhum vira achado — a mesma propriedade de stages.yaml:ungoverned,
-# e é o que impede a lista de virar um lugar onde pendências dormem.
-exemptions: []
+components:
+- id: CMP-CORE
+  kind: service
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/src/engine.js
+  - workspace/target/mesa/tests/engine.test.mjs
+  depends_on:
+  - CMP-PROTOCOL
+  tested_by:
+  - workspace/target/mesa/tests/engine.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/engine.js
+  exposes:
+  - ultima
+  - novoCiclo
+  - processar
+  - estadoJson
+  - enfileirarLocal
+  - reprocessarFilaLocal
+  - marcarEntregue
+  - recusaExterna
+- id: CMP-PROTOCOL
+  kind: service
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/src/protocol.js
+  - workspace/target/mesa/tests/entrega.test.mjs
+  - workspace/target/mesa/tests/espelho-guarda.test.mjs
+  - workspace/target/mesa/tests/frescor.test.mjs
+  - workspace/target/mesa/tests/protocol.test.mjs
+  depends_on: []
+  tested_by:
+  - workspace/target/mesa/tests/entrega.test.mjs
+  - workspace/target/mesa/tests/espelho-guarda.test.mjs
+  - workspace/target/mesa/tests/frescor.test.mjs
+  - workspace/target/mesa/tests/protocol.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/protocol.js
+  exposes:
+  - parseAll
+  - validarChecklist
+  - validarTransicao
+  - mensagemCommit
+  - rastreabilidade
+  - envelopeErro
+- id: CMP-PILOTO
+  kind: service
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/src/piloto.js
+  - workspace/target/mesa/tests/degeneradas.test.mjs
+  - workspace/target/mesa/tests/piloto-tela.test.mjs
+  - workspace/target/mesa/tests/piloto.test.mjs
+  depends_on:
+  - CMP-CORE
+  - CMP-PROTOCOL
+  - CMP-DEMO
+  - CMP-AGENTE-API
+  - CMP-ORQUESTRADORA
+  - CMP-PROVEDORES
+  - CMP-VOO
+  tested_by:
+  - workspace/target/mesa/tests/degeneradas.test.mjs
+  - workspace/target/mesa/tests/piloto-tela.test.mjs
+  - workspace/target/mesa/tests/piloto.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/piloto.js
+  exposes:
+  - vooInicial
+  - proximaParada
+  - estadoDoVoo
+  - cartaoDaParada
+  - registroDeChamada
+  - NIVEIS
+  - PARADAS
+- id: CMP-PROVEDORES
+  kind: service
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/src/provedores.js
+  - workspace/target/mesa/tests/config.test.mjs
+  depends_on:
+  - CMP-ORQUESTRADORA
+  tested_by:
+  - workspace/target/mesa/tests/config.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/provedores.js
+  exposes:
+  - PROVEDORES
+  - PADRAO
+  - porId
+  - precoDe
+  - verificaveis
+  - ORIGEM_UNICA
+- id: CMP-ORQUESTRADORA
+  kind: service
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/src/orquestradora.js
+  - workspace/target/mesa/tests/orquestradora.test.mjs
+  - workspace/target/mesa/tests/real-deepseek.test.mjs
+  depends_on:
+  - CMP-PROVEDORES
+  - CMP-CORE
+  - CMP-CUSTO
+  - CMP-PROMPTS
+  - CMP-DEMO
+  - CMP-PROTOCOL
+  - CMP-VOO
+  tested_by:
+  - workspace/target/mesa/tests/orquestradora.test.mjs
+  - workspace/target/mesa/tests/real-deepseek.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/orquestradora.js
+  exposes:
+  - chamarLLM
+  - chamarOrquestradora
+  - montarCorpo
+  - cfgDoProvedor
+  - lerContrato
+  - CONFIG_PADRAO
+- id: CMP-VOO
+  kind: service
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/src/voo.js
+  - workspace/target/mesa/tests/voo.test.mjs
+  depends_on:
+  - CMP-CORE
+  - CMP-PROTOCOL
+  - CMP-ORQUESTRADORA
+  - CMP-PILOTO
+  - CMP-PROVEDORES
+  - CMP-DEMO
+  tested_by:
+  - workspace/target/mesa/tests/voo.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/voo.js
+  exposes:
+  - voar
+  - LIMITE_RETENTATIVA
+- id: CMP-AGENTE-API
+  kind: adapter
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/src/agente-api.js
+  - workspace/target/mesa/tests/agente-api.test.mjs
+  depends_on:
+  - CMP-ORQUESTRADORA
+  - CMP-PROTOCOL
+  - CMP-PROMPTS
+  - CMP-DEMO
+  - CMP-CORE
+  - CMP-PILOTO
+  - CMP-PROVEDORES
+  tested_by:
+  - workspace/target/mesa/tests/agente-api.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/agente-api.js
+  exposes:
+  - chamarAgente
+  - cfgDoAgente
+  - promptDoAgente
+- id: CMP-PROMPTS
+  kind: domain-module
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/prompt-orq.mjs
+  - workspace/target/mesa/tests/prompt-contrato.test.mjs
+  - workspace/target/mesa/tests/prompts-agentes.test.mjs
+  depends_on:
+  - CMP-DEMO
+  - CMP-PILOTO
+  - CMP-PROTOCOL
+  - CMP-PROVEDORES
+  tested_by:
+  - workspace/target/mesa/tests/prompt-contrato.test.mjs
+  - workspace/target/mesa/tests/prompts-agentes.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/prompt-orq.mjs
+  exposes:
+  - promptOrquestradora
+  - promptDeAgente
+  - orcamentoDoPrompt
+  - tokensAprox
+  - blocoXml
+  - CHARS_POR_TOKEN
+  - TETO_TOKENS_PROMPT
+- id: CMP-MESA
+  kind: ui-surface
+  capability: CAP-MESA
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/Mesa-v1.html
+  - workspace/target/mesa/README.md
+  - workspace/target/mesa/assets/fonts/plex-mono-400-latin-ext.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-400-latin.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-500-latin-ext.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-500-latin.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-600-latin-ext.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-600-latin.woff2
+  - workspace/target/mesa/assets/fonts/plex-sans-latin-ext.woff2
+  - workspace/target/mesa/assets/fonts/plex-sans-latin.woff2
+  - workspace/target/mesa/build.mjs
+  - workspace/target/mesa/src/render.js
+  - workspace/target/mesa/src/style.css
+  - workspace/target/mesa/src/template.html
+  - workspace/target/mesa/src/ui.js
+  - workspace/target/mesa/tests/e2e.test.mjs
+  - workspace/target/mesa/tests/telemetria.test.mjs
+  - workspace/target/mesa/tests/voo-demonstracao.test.mjs
+  depends_on:
+  - CMP-PROMPTS
+  - CMP-DEMO
+  - CMP-CORE
+  - CMP-ORQUESTRADORA
+  - CMP-PILOTO
+  - CMP-PROTOCOL
+  - CMP-PROVEDORES
+  - CMP-VOO
+  - CMP-AGENTE-API
+  tested_by:
+  - workspace/target/mesa/tests/e2e.test.mjs
+  - workspace/target/mesa/tests/telemetria.test.mjs
+  - workspace/target/mesa/tests/voo-demonstracao.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/Mesa-v1.html
+  exposes:
+  - iniciar
+  - montar
+  - compilar
+- id: CMP-DEMO
+  kind: domain-module
+  capability: CAP-DEMO
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/src/demo.js
+  - workspace/target/mesa/tests/aceite.test.mjs
+  depends_on:
+  - CMP-CORE
+  tested_by:
+  - workspace/target/mesa/tests/aceite.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/demo.js
+  exposes:
+  - POR_ID
+  - respostaDemo
+  - xmlDoRoteiro
+  - xmlIncompleto
+  - DOC_EXEMPLO
+  - ROTEIRO
+- id: CMP-CUSTO
+  kind: service
+  capability: CAP-CUSTO
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/custo.mjs
+  - workspace/target/mesa/tests/custo.test.mjs
+  depends_on:
+  - CMP-PROVEDORES
+  tested_by:
+  - workspace/target/mesa/tests/custo.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/custo.mjs
+  exposes:
+  - custoDe
+  - eventoDe
+  - semChave
+  - FIM
+  - montarRelatorio
+- id: CMP-PREFLIGHT
+  kind: service
+  capability: CAP-PREFLIGHT
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/preflight.mjs
+  - workspace/target/mesa/tests/preflight.test.mjs
+  depends_on:
+  - CMP-PROMPTS
+  - CMP-ORQUESTRADORA
+  - CMP-PROVEDORES
+  tested_by:
+  - workspace/target/mesa/tests/preflight.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/preflight.mjs
+  exposes:
+  - preflight
+  - OK
+  - FALHOU
+  - NAO_VERIFICADO
+  - PULADO
+  - USER_SONDA
+- id: CMP-SONDA
+  kind: service
+  capability: CAP-SONDA
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/sonda-corpo.mjs
+  - workspace/target/mesa/tests/sonda-corpo.test.mjs
+  depends_on:
+  - CMP-PROMPTS
+  - CMP-AGENTE-API
+  - CMP-ORQUESTRADORA
+  - CMP-PROTOCOL
+  - CMP-PROVEDORES
+  tested_by:
+  - workspace/target/mesa/tests/sonda-corpo.test.mjs
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/sonda-corpo.mjs
+  exposes:
+  - sondaCorpo
+  - sondarAgente
+  - classificar
+  - OK
+  - INCONCLUSIVO
+- id: CMP-ORQ-PY
+  kind: adapter
+  capability: CAP-ORCH
+  status: proposed
+  source_paths:
+  - workspace/target/mesa/tests/orquestrador-py.test.mjs
+  - workspace/target/src/orquestrador_a2a.py
+  - workspace/target/tests/test_orquestrador_a2a.py
+  depends_on: []
+  tested_by:
+  - workspace/target/mesa/tests/orquestrador-py.test.mjs
+  - workspace/target/src/orquestrador_a2a.py
+  - workspace/target/tests/test_orquestrador_a2a.py
+  owner: '@danzeroum'
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: src/orquestrador_a2a.py
+  exposes:
+  - orquestrador_a2a.AGENTES
+  - orquestrador_a2a.AnthropicClient
+  - orquestrador_a2a.DryRunClient
+  - orquestrador_a2a.Envelope
+  - orquestrador_a2a.FECHA_THREAD
+  - orquestrador_a2a.LLMClient
+  - orquestrador_a2a.MSG_BLOCK
+  - orquestrador_a2a.Orquestrador
+  - orquestrador_a2a.TAG
+  - orquestrador_a2a.TRANSICOES
+  - orquestrador_a2a.carregar_prompts
+  - orquestrador_a2a.envelope_erro
+  - orquestrador_a2a.espera_resposta
+  - orquestrador_a2a.main
+  - orquestrador_a2a.motivo_de_entrega
+exemptions:
+- path: workspace/target/mesa/tests/espelho.mjs
+  justification: Apoio de teste que espelha respostas simuladas e valida a projecao dos roteiros; nao constitui componente de negocio nem e executado fora do teste.
+- path: workspace/target/mesa/tests/roteiro.mjs
+  justification: 'Apoio de teste do modo demonstracao: monta roteiros simulados de chats e respostas canonicas para os testes; nao e executado fora do teste.'
+- path: workspace/target/mesa/tests/cdp.mjs
+  justification: 'Apoio de teste e2e: abre navegador Chromium via CDP, gerencia processos filhos e prazos; infraestrutura do teste, nunca componente de producao.'

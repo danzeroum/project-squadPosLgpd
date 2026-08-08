@@ -1,12 +1,80 @@
-# Superfícies de UI ligadas a capacidades. IDs estáveis (UI-*) apontam para capacidades (CAP-*).
-# Critérios de aceite explícitos dão ao agente reviewer uma régua de experiência, não um palpite.
-# Schema: harness/schemas/ui-surfaces.schema.json
-# status: proposed — não há código de UI ainda; o fiscal não exige arquivo (só resolução do CAP).
-#
-# Vazia por construção (CP-000): superfícies do alvo nascem na ingestão.
-schema_version: "1.0"
-metadata_version: "1.0"
+schema_version: '1.0'
+metadata_version: '1.0'
 source_of_truth: true
 generated_from: null
-
-ui_surfaces: []
+ui_surfaces:
+- id: UI-MESA-PAINEL
+  capability: CAP-MESA
+  status: proposed
+  routes:
+  - mesa/Mesa-v1.html
+  primary_user_goal: Abrir o ciclo colando a documentacao de privacidade
+  acceptance_criteria:
+  - O proximo passo inicial e levar o A2A-0001 ao arquiteto
+  - O total do checklist e fixado pelo 1o envelope do ciclo
+  satisfies:
+  - REQ-012
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/Mesa-v1.html
+- id: UI-MESA-TRANSITO
+  capability: CAP-MESA
+  status: proposed
+  routes:
+  - mesa/Mesa-v1.html#transito
+  primary_user_goal: Transitar envelopes entre mesas via copiar e colar sem perder rastreabilidade
+  acceptance_criteria:
+  - Copiar envelope, colar no chat, colar resposta, Processar (Enter)
+  - Aceito gera caminho e mensagem de commit copiaveis
+  satisfies:
+  - REQ-003
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/Mesa-v1.html
+- id: UI-MESA-CONFIG
+  capability: CAP-MESA
+  status: proposed
+  routes:
+  - mesa/Mesa-v1.html#config
+  primary_user_goal: Configurar chave, base URL, modelo e links dos chats
+  acceptance_criteria:
+  - Chave e token ficam so no localStorage
+  - Desligar o modo demonstracao para usar a orquestradura real
+  satisfies:
+  - REQ-010
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/Mesa-v1.html
+- id: UI-MESA-LINHA
+  capability: CAP-MESA
+  status: proposed
+  routes:
+  - mesa/Mesa-v1.html#linha
+  primary_user_goal: Navegar o historio da linha do tempo
+  acceptance_criteria:
+  - Busca por /
+  - Atalhos 1-5 abrem o chat do agente
+  satisfies:
+  - REQ-011
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/Mesa-v1.html
+- id: UI-MESA-TELEMETRIA
+  capability: CAP-MESA
+  status: proposed
+  routes:
+  - mesa/Mesa-v1.html#telemetria
+  primary_user_goal: Acompanhar o voo, custos e cola de parada de cada parada
+  acceptance_criteria:
+  - Estado do voo por etapa
+  - Telemetria nao exibe chaves nem tokens
+  satisfies:
+  - REQ-013
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/Mesa-v1.html

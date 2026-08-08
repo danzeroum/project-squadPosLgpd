@@ -1,13 +1,111 @@
-# Contratos de interface entre componentes. O fiscal cruza:
-#  - provider e consumers existem em components.yaml;
-#  - exposes ⊆ exposes do componente provedor;
-#  - cada consumidor declara depends_on o provedor (coerência com o grafo de componentes).
-# Schema: harness/schemas/interfaces.schema.json
-#
-# Vazia por construção (CP-000): interfaces nascem na ingestão do alvo, nunca copiadas do exemplo.
-schema_version: "1.0"
-metadata_version: "1.0"
+schema_version: '1.0'
+metadata_version: '1.0'
 source_of_truth: true
 generated_from: null
-
-interfaces: []
+interfaces:
+- id: IFC-CORE-API
+  name: Contrato do motor de estado (engine)
+  kind: python-api
+  provider: CMP-CORE
+  consumers:
+  - CMP-PILOTO
+  - CMP-VOO
+  - CMP-MESA
+  exposes:
+  - ultima
+  - novoCiclo
+  - processar
+  - estadoJson
+  - enfileirarLocal
+  - marcarEntregue
+  - recusaExterna
+  status: proposed
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+- id: IFC-PROTOCOL-UTIL
+  name: Contrato do protocolo de envelopes
+  kind: python-api
+  provider: CMP-PROTOCOL
+  consumers:
+  - CMP-CORE
+  - CMP-PILOTO
+  exposes:
+  - parseAll
+  - validarChecklist
+  - validarTransicao
+  - envelopeErro
+  - mensagemCommit
+  status: proposed
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+- id: IFC-ORQ-PY-API
+  name: Orquestrador A2A em Python (CLI e classe)
+  kind: python-api
+  provider: CMP-ORQ-PY
+  consumers: []
+  exposes:
+  - orquestrador_a2a.Orquestrador
+  - orquestrador_a2a.TRANSICOES
+  - orquestrador_a2a.envelope_erro
+  - orquestrador_a2a.espera_resposta
+  - orquestrador_a2a.main
+  status: proposed
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+- id: IFC-PROMPTS-API
+  name: Montagem e orcamento do prompt
+  kind: python-api
+  provider: CMP-PROMPTS
+  consumers:
+  - CMP-MESA
+  - CMP-PREFLIGHT
+  - CMP-SONDA
+  exposes:
+  - promptOrquestradora
+  - promptDeAgente
+  - orcamentoDoPrompt
+  - tokensAprox
+  - blocoXml
+  status: proposed
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+- id: IFC-PREFLIGHT-CLI
+  name: Verificacao preflight via CLI
+  kind: cli
+  provider: CMP-PREFLIGHT
+  consumers: []
+  exposes:
+  - preflight
+  - OK
+  - FALHOU
+  - NAO_VERIFICADO
+  - PULADO
+  - USER_SONDA
+  status: proposed
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/preflight.mjs
+- id: IFC-CUSTO-CLI
+  name: Relatorio de custo via CLI
+  kind: cli
+  provider: CMP-CUSTO
+  consumers: []
+  exposes:
+  - custoDe
+  - eventoDe
+  - semChave
+  - FIM
+  status: proposed
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/custo.mjs

@@ -1,11 +1,193 @@
-# Backlog de requisitos, cada item ligado a uma capacidade (CAP-*). Dá ao agente o QUE fazer e por
-# quê, sem inventar escopo. Um item pode citar o risco que introduz e depender de outro.
-# Schema: harness/schemas/backlog.schema.json
-#
-# Vazio por construção (CP-000): requisitos nascem da ingestão do alvo, com proveniência.
-schema_version: "1.0"
-metadata_version: "1.0"
+schema_version: '1.0'
+metadata_version: '1.0'
 source_of_truth: true
 generated_from: null
-
-items: []
+items:
+- id: REQ-001
+  title: Voo A2A completo de um ciclo de adequacao com paradas de julgamento humano
+  type: user-story
+  capability: CAP-ORCH
+  status: proposed
+  priority: high
+  acceptance_criteria:
+  - Processar a documentacao de privacidade no painel e abrir o ciclo sem fabricar o A2A-0001
+  - Reprovar por etapa acende o aviso de ping-pong na terceira reprovacao da mesma etapa
+  - Envelope aceito gera caminho, mensagem e conteudo de commit prontos para copiar
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Como operar
+- id: REQ-002
+  title: Estado e fila local sobreviverem a F5 e a fechar o navegador
+  type: user-story
+  capability: CAP-ESTADO
+  status: proposed
+  priority: high
+  acceptance_criteria:
+  - Estado persistente em localStorage entre sessoes
+  - Modo prancheta enfileira colagens sem validacao e reprocessa na ordem ao religar
+  - Exportar/importar JSON preservam o historico sem as chaves de API
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Modo prancheta
+- id: REQ-003
+  title: Transito manual de envelopes entre mesas com validacao do XML
+  type: user-story
+  capability: CAP-MESA
+  status: proposed
+  priority: medium
+  acceptance_criteria:
+  - Copiar envelope e colar no chat do destinatario
+  - Colar resposta crua e processar (Enter) validando XML
+  - Atalho C copia o envelope de saida
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Como operar
+- id: REQ-004
+  title: Modo demonstracao reproduzir o aceite sem chamar a API
+  type: user-story
+  capability: CAP-DEMO
+  status: proposed
+  priority: medium
+  acceptance_criteria:
+  - Ligado de fabrica, desliga por botao no cabecalho
+  - Os 5 chats simulam as respostas do roteiro
+  - As variantes de resposta reproduzem os desvios A e C do brief
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Modo demonstracao
+- id: REQ-005
+  title: Preflight confirmar a origem unica do modelo antes de operar
+  type: user-story
+  capability: CAP-PREFLIGHT
+  status: proposed
+  priority: medium
+  acceptance_criteria:
+  - npm run preflight completa sem erros de contrato
+  - Origem unica do modelo verificavel a cada execucao
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Origem unica do modelo
+- id: REQ-006
+  title: Telemetria de custo por voo
+  type: user-story
+  capability: CAP-CUSTO
+  status: proposed
+  priority: medium
+  acceptance_criteria:
+  - Registrar custo e eventos de cada chamada por voo
+  - Relatorio agregado sem chaves nem valores sensiveis
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/custo.mjs
+    section: custoDe
+- id: REQ-007
+  title: Avaliar respostas brutas de agentes por alvo de conteudo
+  type: user-story
+  capability: CAP-SONDA
+  status: proposed
+  priority: low
+  acceptance_criteria:
+  - Sondar o corpo de resposta de um agente
+  - Classificar como OK ou inconclusivo
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/sonda-corpo.mjs
+    section: sondarAgente
+- id: REQ-008
+  title: Orquestrador A2A em Python operar o mesmo protocolo de veredito
+  type: enabler
+  capability: CAP-ORCH
+  status: proposed
+  priority: medium
+  acceptance_criteria:
+  - Ciclo nao pergunta ao dev no par QA
+  - Entrega nao some do historico
+  - Reprovado ainda chama o dev
+  - Verdict ausente pergunta
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: src/orquestrador_a2a.py
+    section: Orquestrador
+- id: REQ-009
+  title: 'Config de provedores: base-URL, modelo e precos centralizados'
+  type: enabler
+  capability: CAP-ORCH
+  status: proposed
+  priority: medium
+  acceptance_criteria:
+  - Lista de provedores verificavel com precos por modelo
+  - Config padrao para a orquestradora
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/src/provedores.js
+    section: PROVEDORES
+- id: REQ-010
+  title: Configuracao da mesa guardar segredos somente no localStorage
+  type: user-story
+  capability: CAP-MESA
+  status: proposed
+  priority: high
+  acceptance_criteria:
+  - Chave e token nunca no codigo, nunca commitados
+  - JSON exportado sai sem chave nem token
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Como operar
+- id: REQ-011
+  title: Linha do tempo buscar trânsito de envelopes por atalho
+  type: user-story
+  capability: CAP-MESA
+  status: proposed
+  priority: low
+  acceptance_criteria:
+  - Busca na linha do tempo com atalho /
+  - Atalhos G 1-6 trocam de tela
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Como operar
+- id: REQ-012
+  title: Abrir o ciclo a partir do painel
+  type: user-story
+  capability: CAP-MESA
+  status: proposed
+  priority: high
+  acceptance_criteria:
+  - No Painel (G 1) cola a documentacao de privacidade
+  - Abrir o ciclo leva o primeiro passo ao arquiteto
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Como operar
+- id: REQ-013
+  title: Telemetria por voo na mesa
+  type: user-story
+  capability: CAP-MESA
+  status: proposed
+  priority: medium
+  acceptance_criteria:
+  - A mesa mostra o voo por etapa
+  - Telemetria nao exibe chaves nem tokens
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Como operar

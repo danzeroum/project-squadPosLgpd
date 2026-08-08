@@ -1,13 +1,157 @@
-# Capacidades de negócio com rastreabilidade física: cada capacidade aponta para código e teste
-# reais. IDs estáveis (CAP-...) formam as arestas duráveis do grafo.
-# Schema: harness/schemas/capabilities.schema.json
-# O fiscal semântico só exige que source_paths/test_paths existam para status implemented/verified.
-#
-# NASCE VAZIA por construção (CP-000): as capacidades do alvo serão declaradas pela ingestão,
-# com proveniência (derived_from) contra o SHA de target.lock — nunca copiadas do exemplo do molde.
-schema_version: "1.0"
-metadata_version: "1.0"
-source_of_truth: true
-generated_from: null
-
-capabilities: []
+schema_version: '1.0'
+metadata_version: '1.0'
+source_of_truth: false
+generated_from: harness/pipeline/ingest.yaml#ING-04-NEGOCIO
+capabilities:
+- id: CAP-ORCH
+  name: Orquestracao A2A da cadeia de adequacao LGPD
+  status: proposed
+  owners:
+    business_owner: '@danzeroum'
+    technical_owner: '@danzeroum'
+  risk_level: pending_judgment
+  source_paths:
+  - workspace/target/mesa/prompt-orq.mjs
+  - workspace/target/mesa/src/agente-api.js
+  - workspace/target/mesa/src/engine.js
+  - workspace/target/mesa/src/orquestradora.js
+  - workspace/target/mesa/src/piloto.js
+  - workspace/target/mesa/src/protocol.js
+  - workspace/target/mesa/src/provedores.js
+  - workspace/target/mesa/src/voo.js
+  test_paths:
+  - workspace/target/mesa/tests/agente-api.test.mjs
+  - workspace/target/mesa/tests/config.test.mjs
+  - workspace/target/mesa/tests/degeneradas.test.mjs
+  - workspace/target/mesa/tests/engine.test.mjs
+  - workspace/target/mesa/tests/entrega.test.mjs
+  - workspace/target/mesa/tests/espelho-guarda.test.mjs
+  - workspace/target/mesa/tests/frescor.test.mjs
+  - workspace/target/mesa/tests/orquestrador-py.test.mjs
+  - workspace/target/mesa/tests/orquestradora.test.mjs
+  - workspace/target/mesa/tests/piloto-tela.test.mjs
+  - workspace/target/mesa/tests/piloto.test.mjs
+  - workspace/target/mesa/tests/prompt-contrato.test.mjs
+  - workspace/target/mesa/tests/prompts-agentes.test.mjs
+  - workspace/target/mesa/tests/protocol.test.mjs
+  - workspace/target/mesa/tests/real-deepseek.test.mjs
+  - workspace/target/mesa/tests/voo.test.mjs
+  - workspace/target/src/orquestrador_a2a.py
+  - workspace/target/tests/test_orquestrador_a2a.py
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Como operar
+- id: CAP-MESA
+  name: 'Operacao da mesa: painel, transito, configuracao e linha do tempo'
+  status: proposed
+  owners:
+    business_owner: '@danzeroum'
+    technical_owner: '@danzeroum'
+  risk_level: pending_judgment
+  source_paths:
+  - workspace/target/mesa/Mesa-v1.html
+  - workspace/target/mesa/README.md
+  - workspace/target/mesa/assets/fonts/plex-mono-400-latin-ext.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-400-latin.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-500-latin-ext.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-500-latin.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-600-latin-ext.woff2
+  - workspace/target/mesa/assets/fonts/plex-mono-600-latin.woff2
+  - workspace/target/mesa/assets/fonts/plex-sans-latin-ext.woff2
+  - workspace/target/mesa/assets/fonts/plex-sans-latin.woff2
+  - workspace/target/mesa/build.mjs
+  - workspace/target/mesa/src/render.js
+  - workspace/target/mesa/src/style.css
+  - workspace/target/mesa/src/template.html
+  - workspace/target/mesa/src/ui.js
+  test_paths:
+  - workspace/target/mesa/tests/e2e.test.mjs
+  - workspace/target/mesa/tests/telemetria.test.mjs
+  - workspace/target/mesa/tests/voo-demonstracao.test.mjs
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Como operar
+- id: CAP-ESTADO
+  name: Estado persistente, exportacao/importacao e fila local (modo prancheta)
+  status: proposed
+  owners:
+    business_owner: '@danzeroum'
+    technical_owner: '@danzeroum'
+  risk_level: pending_judgment
+  source_paths:
+  - workspace/target/mesa/src/engine.js
+  test_paths:
+  - workspace/target/mesa/tests/engine.test.mjs
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Modo prancheta
+- id: CAP-CUSTO
+  name: Telemetria e orcamento de custo por uso de LLM
+  status: proposed
+  owners:
+    business_owner: '@danzeroum'
+    technical_owner: '@danzeroum'
+  risk_level: pending_judgment
+  source_paths:
+  - workspace/target/mesa/custo.mjs
+  test_paths:
+  - workspace/target/mesa/tests/custo.test.mjs
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/custo.mjs
+    section: montarRelatorio
+- id: CAP-PREFLIGHT
+  name: Verificacao preflight e origem unica do modelo
+  status: proposed
+  owners:
+    business_owner: '@danzeroum'
+    technical_owner: '@danzeroum'
+  risk_level: pending_judgment
+  source_paths:
+  - workspace/target/mesa/preflight.mjs
+  test_paths:
+  - workspace/target/mesa/tests/preflight.test.mjs
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Origem unica do modelo
+- id: CAP-SONDA
+  name: Sonda de respostas brutas de agentes
+  status: proposed
+  owners:
+    business_owner: '@danzeroum'
+    technical_owner: '@danzeroum'
+  risk_level: pending_judgment
+  source_paths:
+  - workspace/target/mesa/sonda-corpo.mjs
+  test_paths:
+  - workspace/target/mesa/tests/sonda-corpo.test.mjs
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/sonda-corpo.mjs
+    section: sondarAgente
+- id: CAP-DEMO
+  name: Modo demonstracao da mesa
+  status: proposed
+  owners:
+    business_owner: '@danzeroum'
+    technical_owner: '@danzeroum'
+  risk_level: pending_judgment
+  source_paths:
+  - workspace/target/mesa/src/demo.js
+  test_paths:
+  - workspace/target/mesa/tests/aceite.test.mjs
+  derived_from:
+    repo: danzeroum/squadPosLgpd
+    sha: c5686ae4d6e5f0b9670cf8706b84241ba031a2a1
+    path: mesa/README.md
+    section: Modo demonstracao
