@@ -1,0 +1,44 @@
+# CP-004 - Fechamento da ingestao: project.yaml passa de incubating para active
+#
+# A ingestao fechou: as 8 fases de harness/pipeline/ingest.yaml executadas, sentinelas
+# pending_judgment substituidos por julgamento humano (CP-003), validate_all verde.
+# project.yaml declara o proprio criterio: "Fecha a ingestao, e vida" - e ADR-019 registra
+# que vermelho declarado durante a mudanca era mapa, nao defeito. O piso de colecoes
+# (check_collection_floor) volta a valer: capacidades, componentes, interfaces e
+# requisitos ja estao preenchidos pela ingestao.
+#
+# Decisao de pessoa, confirmada em 08/08/2026 no fluxo /ingerir: lifecycle active.
+# Schema: ../schemas/change-proposal.schema.json
+schema_version: "1.1"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+proposal:
+  id: CP-004
+  title: "Fechamento da ingestao: lifecycle vai de incubating a active"
+  author_kind: agent
+  created_at: "2026-08-08T01:10:00Z"
+  status: approved
+
+  capabilities_affected: []
+  components_affected: []
+  paths_affected:
+    - project.yaml
+  risk_assessment:
+    level: low
+    risks: []
+    rationale: >
+      Promocao do lifecycle com a ingestao fechada e os fiscais verdes. A mudanca
+      reabilita o piso de colecoes (incubating suspende; active cobra), que esta
+      preenchido. Nenhum fiscal existe para ser afrouxado: o que muda e o projeto
+      declarar-se pronto. Aprovacao humana registrada em 08/08/2026.
+
+  required_gates:
+    - metadata-validation
+
+  tests_required:
+    - python ci/validate_all.py
+
+  human_approval_required: false
+  change_mode: pull_request

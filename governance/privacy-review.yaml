@@ -16,7 +16,7 @@ review:
   document: governance/ripd.md
   produced_by: agent
   skill: revisao-lgpd
-  scope_fingerprint: "sha256:a531ce459c82ed780840dc158358bfe9080b5cddd919a96b00a0f60397fbd7bf"
+  scope_fingerprint: "sha256:5c9763d935fdb69d98fc5853c0f0b5025131de57b6bcba93839431c7be8d3327"
   issues: []
 
   # Escopo honesto: categorias do checklist sem material correspondente neste repositorio.

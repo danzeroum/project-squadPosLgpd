@@ -18,7 +18,7 @@ project:
   # components, interfaces, backlog) nascem vazias por construção (CP-000) e só o piso
   # da ingestão as tolera — o fiscal recusa o vazio sob lifecycle 'active'. Fecha a ingestão,
   # é vida (ADR-019: vermelho declarado é mapa, não defeito).
-  lifecycle: "incubating"
+  lifecycle: "active"
   status: "active"
 
 target:
