@@ -480,12 +480,13 @@ risks:
 
   - id: RISK-INCUBA-001
     area: governance
-    description: "A promessa 'o vermelho é o mapa' (ADR-019) não tem mecanismo para um derivado em incubação. `lifecycle: incubating` só é consultado por `audit_governance.py::check_stage_coverage`; as invariantes de ingestão de `validate_metadata` (órfão, teste órfão, regra, REQ, I4, I5) e o `audit_lgpd` não o consultam. Enquanto a ingestão não termina, mapa e defeito têm exatamente a mesma cor, e cabe a cada derivado inventar a diferença."
+    description: "A promessa 'o vermelho é o mapa' (ADR-019) não tem mecanismo para um derivado em incubação. `lifecycle: incubating` só é consultado por `audit_governance.py::check_stage_coverage`; as invariantes de ingestão de `validate_metadata` (órfão, teste órfão, regra, REQ, I4, I5) e o `audit_lgpd` não o consultam. Enquanto a ingestão não termina, mapa e defeito têm exatamente a mesma cor, e cabe a cada derivado inventar a diferença. RESOLVIDO em 08/08/2026 (CP-005): o estado incubating cessou no CP-004 (lifecycle active); a promessa original (piso suspenso durante a ingestao) nao tem mais objeto neste repositorio - fechado."
     likelihood: high
     impact: medium
     treatment: accept
     owner: technical_owner
-    status: open
+    # RESOLVIDO
+    status: closed
     # Medido, não suposto: `danzeroum/projectCockpitDocker` virou o primeiro derivado a consumir a
     # v1.0.0 e ficou com 299 achados — dos quais 209 são o mapa de componentes e testes que a
     # ingestão ainda vai autorar. Ele resolveu por conta própria, com uma catraca que recusa SUBIDA
@@ -503,7 +504,6 @@ risks:
     # CP-000: o controle apontava para uma proposta do MOLDE (CP-038) que não existe neste
     # derivado; o controle vira o CP-000 deste repositório, que nasce declarando a mesma promessa
     # (incubação sem ingestão fechada: vermelho é mapa, ADR-019).
-    due: "2026-11-03"
     controls:
       - kind: local_path
         ref: harness/change-proposals/CP-000-o-derivado-nasce-sem-codigo-proprio.yaml
@@ -518,13 +518,12 @@ risks:
 
   - id: RISK-PRIV-003
     area: data
-    description: "Documentacao de privacidade colada pelo operador pode conter dado pessoal de terceiros no texto livre, e o texto transita para a API da orquestradora (provedor externo, DeepSeek por padrao) - transferencia internacional de eventual dado pessoal (Art. 33) sem salvaguarda formal declarada."
+    description: "Documentacao de privacidade colada pelo operador pode conter dado pessoal de terceiros no texto livre, e o texto transita para a API da orquestradora (provedor externo, DeepSeek por padrao) - transferencia internacional de eventual dado pessoal (Art. 33) sem salvaguarda formal declarada. DECISAO em 08/08/2026 (CP-005): aceito - o envio do texto e opcional (o operador cola deliberadamente), sem fluxo regular de titular; reavaliar se o envio virar fluxo do produto ou se o inventario ganhar o primeiro campo PII."
     likelihood: medium
     impact: medium
-    treatment: mitigate
+    treatment: accept
     owner: security_owner
-    status: open
-    due: "2026-08-14"
+    status: accepted
     related:
       - CAP-ORCH
       - CAP-MESA
@@ -546,13 +545,12 @@ risks:
 
   - id: RISK-ACCESS-001
     area: access
-    description: "Credencial da API da orquestradora (chave e token) persistida em localStorage no navegador do operador da mesa: segredo no cliente com superficie de exposicao (XSS/device), e o codigo do alvo fica em workspace/ que a varredura dos fiscais exclui por design - sem fiscal local cobrindo essa janela."
+    description: "Credencial da API da orquestradora (chave e token) persistida em localStorage no navegador do operador da mesa: segredo no cliente com superficie de exposicao (XSS/device), e o codigo do alvo fica em workspace/ que a varredura dos fiscais exclui por design - sem fiscal local cobrindo essa janela. DECISAO em 08/08/2026 (CP-005): aceito - a credencial pertence ao proprio operador e vive no navegador dele, com export minimizador declarado pelo alvo; reavaliar se internet_exposed mudar ou se a mesa ganhar superficie publica."
     likelihood: medium
     impact: medium
-    treatment: mitigate
+    treatment: accept
     owner: security_owner
-    status: open
-    due: "2026-08-14"
+    status: accepted
     related:
       - CAP-MESA
       - CMP-AGENTE-API

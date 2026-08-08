@@ -40,10 +40,10 @@ fazem: **o que ficou de fora?**
 
 | Área | Total | Abertos |
 |---|---|---|
-| access | 4 | 2 |
-| data | 3 | 1 |
+| access | 4 | 1 |
+| data | 3 | 0 |
 | dependencies | 1 | 0 |
-| governance | 15 | 2 |
+| governance | 15 | 1 |
 | webqa | 1 | 0 |
 
 ## Pendências de alinhamento

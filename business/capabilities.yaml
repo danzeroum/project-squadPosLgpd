@@ -5,7 +5,7 @@ generated_from: null
 capabilities:
 - id: CAP-ORCH
   name: Orquestracao A2A da cadeia de adequacao LGPD
-  status: proposed
+  status: implemented
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
@@ -19,6 +19,7 @@ capabilities:
   - workspace/target/mesa/src/protocol.js
   - workspace/target/mesa/src/provedores.js
   - workspace/target/mesa/src/voo.js
+  - workspace/target/src/orquestrador_a2a.py
   test_paths:
   - workspace/target/mesa/tests/agente-api.test.mjs
   - workspace/target/mesa/tests/config.test.mjs
@@ -36,7 +37,7 @@ capabilities:
   - workspace/target/mesa/tests/protocol.test.mjs
   - workspace/target/mesa/tests/real-deepseek.test.mjs
   - workspace/target/mesa/tests/voo.test.mjs
-  - workspace/target/src/orquestrador_a2a.py
+
   - workspace/target/tests/test_orquestrador_a2a.py
   derived_from:
     repo: danzeroum/squadPosLgpd
@@ -45,7 +46,7 @@ capabilities:
     section: Como operar
 - id: CAP-MESA
   name: 'Operacao da mesa: painel, transito, configuracao e linha do tempo'
-  status: proposed
+  status: implemented
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
@@ -77,7 +78,7 @@ capabilities:
     section: Como operar
 - id: CAP-ESTADO
   name: Estado persistente, exportacao/importacao e fila local (modo prancheta)
-  status: proposed
+  status: implemented
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
@@ -93,7 +94,7 @@ capabilities:
     section: Modo prancheta
 - id: CAP-CUSTO
   name: Telemetria e orcamento de custo por uso de LLM
-  status: proposed
+  status: implemented
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
@@ -109,7 +110,7 @@ capabilities:
     section: montarRelatorio
 - id: CAP-PREFLIGHT
   name: Verificacao preflight e origem unica do modelo
-  status: proposed
+  status: implemented
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
@@ -125,7 +126,7 @@ capabilities:
     section: Origem unica do modelo
 - id: CAP-SONDA
   name: Sonda de respostas brutas de agentes
-  status: proposed
+  status: implemented
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'
@@ -141,7 +142,7 @@ capabilities:
     section: sondarAgente
 - id: CAP-DEMO
   name: Modo demonstracao da mesa
-  status: proposed
+  status: implemented
   owners:
     business_owner: '@danzeroum'
     technical_owner: '@danzeroum'

@@ -12,7 +12,7 @@ generated_from: null
 review:
   produced_by: agent
   agent: conformance
-  scope_fingerprint: "sha256:48d473c830470a6c98343f3a2e15bc9f29d7ad5cbb771c5cf8b8a286af7f3196"
+  scope_fingerprint: "sha256:a663eada5c930d18c0380ffdc76293037baad2a51deaca0bc776fb42f6490c05"
 
   findings:
     - id: CONF-001
@@ -84,9 +84,21 @@ review:
         Registro fica para não refazer a descoberta quando o primeiro derivado deste fechar
         a ingestão: o inventário da dependência direta e a isenção de apoio já mordem.
 
+    - id: CONF-006
+      severity: low
+      summary: >
+        Fronteiras de componentes propostas pelo cartographer (CMP-CORE..CMP-ORQ-PY) revisadas
+        e aceitas em CP-005 (aval humano 08/08/2026): cada componente casa com os arquivos do
+        modulo do alvo listados em source_paths; a alternativa fronteira-menor (ADR-010) foi
+        confirmada como adequada para este alvo.
+      disposition: accepted
+      rationale: >
+        A revisao humana que ficou pendente na ingestao aconteceu no pos-ingestao; a fronteira
+        proposta passa a ser decisao acatada, e o item saiu de not_assessed porque o material
+        agora foi examinado.
+
   # O que esta revisão NÃO olhou. "Sem achados" numa categoria que ninguém examinou é a forma
   # mais silenciosa de laudo falso.
   not_assessed:
-    - "Adequação das fronteiras de componente propostas pelo cartographer (revisão humana pendente: ING-07)"
     - "Eficácia real dos controles em produção (não há ambiente de produção)"
-    - "Se os prazos de tratamento de risco são razoáveis (três riscos open, due em 03/11/2026)"
+    - "Se os prazos de tratamento de risco são razoáveis (dois riscos open, due em 03/11/2026: RISK-EXT-001 e RISK-CHANGE-002)"

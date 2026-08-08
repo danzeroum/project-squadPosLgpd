@@ -1,0 +1,62 @@
+# CP-005 - Pos-ingestao: decisoes sobre riscos ING-06, capacidade implementada e fronteiras
+#
+# Aval humano registrado em 08/08/2026 no fluxo de acompanhamento:
+#   (a) RISK-INCUBA-001: FECHADO. A premissa era o estado incubating; o CP-004 promoveu o
+#       lifecycle para active, entao a condicao que o risco descrevia nao existe mais.
+#   (b) RISK-PRIV-003 e RISK-ACCESS-001: ACEITOS pelo security_owner. Justificativa: o
+#       transito e opcional (texto colado deliberadamente pelo operador) e a credencial
+#       pertence ao proprio operador em navegador proprio, com export minimizador
+#       declarado pelo alvo. Sem fluxo de titular nem superficie publica.
+#   (c) business/capabilities.yaml: 7 capacidades de proposed -> implemented (o codigo
+#       correspondente existe no alvo materializado), e a revisao humana das fronteiras
+#       de componente proposta pelo cartographer (que conformance-review.yaml listava
+#       como nao avaliada) fecha no mesmo movimento.
+# Schema: ../schemas/change-proposal.schema.json
+schema_version: "1.1"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+proposal:
+  id: CP-005
+  title: "Pos-ingestao: riscos ING-06 decididos, capacidades implementadas, fronteiras revisadas"
+  author_kind: agent
+  created_at: "2026-08-08T01:40:00Z"
+  status: approved
+
+  capabilities_affected:
+    - CAP-ORCH
+    - CAP-MESA
+    - CAP-ESTADO
+    - CAP-CUSTO
+    - CAP-PREFLIGHT
+    - CAP-SONDA
+    - CAP-DEMO
+  components_affected: []
+  paths_affected:
+    - governance/risk-register.yaml
+    - business/capabilities.yaml
+    - governance/conformance-review.yaml
+  risk_assessment:
+    level: low
+    risks:
+      - RISK-PRIV-003
+      - RISK-ACCESS-001
+      - RISK-INCUBA-001
+    rationale: >
+      Nenhum risco novo e criado; tres decisoes encerram dittida declarada. RISK-PRIV-003 e
+      RISK-ACCESS-001 viram accepted com justificativa registrada (o transito do texto e
+      opcional do proprio operador; a credencial e dele, em navegador dele). RISK-INCUBA-001
+      fecha porque o estado que ele descrevia (incubating) cessou no CP-004. As capacidades
+      declaram implemented respaldado pelo codigo do alvo materializado, e a fronteira de
+      componentes proposta pelo cartographer recebe aval humano. Nenhum caminho protegido
+      alem do fluxo declarado. Reversao: reverte status nos tres riscos.
+
+  required_gates:
+    - metadata-validation
+
+  tests_required:
+    - python ci/validate_all.py
+
+  human_approval_required: false
+  change_mode: pull_request
