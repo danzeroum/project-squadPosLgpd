@@ -1,0 +1,12 @@
+# Superfícies de UI ligadas a capacidades. IDs estáveis (UI-*) apontam para capacidades (CAP-*).
+# Critérios de aceite explícitos dão ao agente reviewer uma régua de experiência, não um palpite.
+# Schema: harness/schemas/ui-surfaces.schema.json
+# status: proposed — não há código de UI ainda; o fiscal não exige arquivo (só resolução do CAP).
+#
+# Vazia por construção (CP-000): superfícies do alvo nascem na ingestão.
+schema_version: "1.0"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+ui_surfaces: []

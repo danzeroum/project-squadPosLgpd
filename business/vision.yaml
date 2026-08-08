@@ -1,0 +1,35 @@
+# Visão de produto: o problema, os usuários e as métricas de sucesso (IDs estáveis MET-*).
+# Os requisitos do backlog citam quais métricas movem — o fiscal cobra que a métrica exista.
+# Schema: harness/schemas/vision.schema.json
+#
+# O "produto" deste repositório é o gêmeo de governança do alvo declarado em project.yaml:target:
+# o negócio de exemplo do molde (precificação/catálogo) foi removido pela CP-000, e a visão passa a
+# ser a de quem GOVERNA — as métricas abaixo medem o instrumento, não o negócio governado (que será
+# desenhado quando a ingestão fechar, e então esta página muda por change-proposal).
+schema_version: "1.0"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+product:
+  problem: "O alvo declarado (project.yaml:target) existe fora deste repositório: sem gêmeo de
+    governança, o código dele não tem metadado, risco ou decisão — e quem governa não tem como
+    medir nem registrar."
+  target_users:
+    - "dono-do-repositorio"
+    - "agentes-de-governanca"
+  value_proposition: "Um gêmeo declarativo que lê o alvo, nunca o copia: toda capacidade,
+    componente, decisão e risco aponta para código material na árvore, com proveniência do SHA."
+  success_metrics:
+    - id: MET-RASTREABILIDADE
+      description: "Percentual de arquivos sob as raízes de código do alvo reivindicados por componente
+        declarado ou isenção justificada na primeira ingestão."
+      target: "100% ou lacuna registrada por inventory_code"
+    - id: MET-CONFORMIDADE
+      description: "Semanticidade do gêmeo: validate_all verde após cada ciclo de ingestão e
+        declarações datadas/assinadas por change-proposal."
+      target: "green no CI de governança"
+    - id: MET-COMPARABILIDADE
+      description: "Equilíbrio entre repositório e real: fingerprint de conformidade e de LGPD
+        recalculados a cada ciclo, empatando com o SHA de target.lock."
+      target: "sem drift entre metadado e estado real do alvo"

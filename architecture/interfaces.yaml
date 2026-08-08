@@ -1,0 +1,13 @@
+# Contratos de interface entre componentes. O fiscal cruza:
+#  - provider e consumers existem em components.yaml;
+#  - exposes ⊆ exposes do componente provedor;
+#  - cada consumidor declara depends_on o provedor (coerência com o grafo de componentes).
+# Schema: harness/schemas/interfaces.schema.json
+#
+# Vazia por construção (CP-000): interfaces nascem na ingestão do alvo, nunca copiadas do exemplo.
+schema_version: "1.0"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+interfaces: []

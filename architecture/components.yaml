@@ -1,0 +1,17 @@
+# Componentes técnicos ligados a capacidades. Fecha a rastreabilidade
+# capacidade → componente → código → teste.
+# Schema: harness/schemas/components.schema.json
+#
+# Vazia por construção (CP-000): o mapa de componentes nasce na ingestão do alvo
+# (proveniência em derived_from, sem julgamento de fronteira automático — ADR-010).
+schema_version: "1.0"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+components: []
+
+# Arquivos sob as raízes de código que deliberadamente não pertencem a componente algum.
+# Isenção que não casa arquivo nenhum vira achado — a mesma propriedade de stages.yaml:ungoverned,
+# e é o que impede a lista de virar um lugar onde pendências dormem.
+exemptions: []

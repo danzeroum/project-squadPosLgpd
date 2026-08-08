@@ -1,0 +1,102 @@
+# CP-000 — o derivado nasce sem código próprio: remover o negócio de exemplo, ancorar a trava externa
+#
+# A carcaça v1.1.0 do molde carrega um negócio de exemplo (precificação/catálogo) cuja única
+# função era dar substrato para as asserções do ADR-005 morderem no repositório de origem.
+# Neste derivado ele é ruído: metadado de um negócio que não existe aqui. Esta proposta faz o
+# nascimento num só movimento — separá-lo deixaria o repositório vermelho no meio (ADR-008).
+#
+# Aprovação humana registrada em 07/08/2026 pelo dono do repositório, para as seis mudanças.
+# Schema: ../schemas/change-proposal.schema.json
+schema_version: "1.1"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+proposal:
+  id: CP-000
+  title: "Nascer como derivado: remover o negócio de exemplo, ancorar o alvo e declarar a camada externa desligada"
+  author_kind: agent
+  created_at: "2026-08-07T00:00:00Z"
+  status: approved
+
+  capabilities_affected: []
+  components_affected: []
+  paths_affected:
+    - src/project
+    - tests/unit
+    - business/vision.yaml
+    - business/capabilities.yaml
+    - business/rules
+    - business/requirements/backlog.yaml
+    - architecture/components.yaml
+    - architecture/interfaces.yaml
+    - design/ui-surfaces.yaml
+    - architecture/adr/index.yaml
+    - architecture/adr/ADR-005-catalogo-via-porta.md
+    - harness/stages.yaml
+    - harness/harness.yaml
+    - governance/risk-register.yaml
+    - governance/conformance-review.yaml
+
+  risk_assessment:
+    level: high
+    risks:
+      - RISK-META-001
+      - RISK-DERIV-001
+      - RISK-DERIV-002
+      - RISK-EXT-001
+    rationale: >
+      AS CINCO MUDANÇAS, UM SÓ MOVIMENTO (ADR-008 / passo 5 do /adotar). Separar qualquer
+      uma deixaria o repositório vermelho no meio da transição:
+
+      (1) REMOVER O EXEMPLO. `src/project/`, `tests/unit/` e os metadados do negócio de
+      brinquedo — `CAP-PRICING`, `CAP-CATALOG`, `CMP-*`, `IFC-*`, `RULE-*`, `UI-*`, `REQ-*`,
+      `MET-*`. O que o repositório governa é o alvo declarado em project.yaml:target, não
+      precificação. Metadado de negócio que não existe é o pior ruído: valida, passa e mente.
+
+      (2) SUPERSEDE O ADR-005. As asserções A1-A5 apontam para `src/project/*`; sem o código
+      virariam `assertion_unresolvable` — uma trava que não encontra o que vigiar está
+      quebrada, não satisfeita. O ADR fica como registro; o índice declara `superseded`.
+
+      (3) AJUSTAR harness/stages.yaml. Os artefatos de STAGE-CODE e STAGE-TESTS passam a
+      descrever o código do alvo materializado em `workspace/target/`, sem cravar caminho
+      específico do alvo em `harness/` (ADR-008-A5 — nenhum alvo é especial).
+
+      (4) REMOVER A ASSERÇÃO ADR-008-A6 DO ÍNDICE. Ela crava `kind: "mold"` em project.yaml
+      e é trava do repositório de origem; herdada aqui ela reprovaria corretamente, porque
+      este repositório é `derived`, declarado em project.yaml e ancorado em target.lock no
+      mesmo movimento (passo 4 do /adotar).
+
+      (5) CAMADA EXTERNA DESLIGADA E DATADA. A carcaça herda `external_audit.enabled: true`
+      do molde, cujo atestado é emitido por `danzeroum/harness-authority` PARA O MOLDE —
+      por-repositório, instransferível. Copiar o atestado simularia autoridade externa sobre
+      este repositório; manter `enabled: true` sem atestado deixaria o CI permanentemente
+      vermelho por condição que ninguém neste repositório satisfaz. Nasce `enabled: false`
+      com `accepted_risk: RISK-EXT-001` reaberto e `due` — estado de primeira classe da
+      política trava-externa ('o desligado continua declarável'). RELIGA quando a autoridade
+      emitir atestado para ESTE repositório, e isso será mudança declarada com aval.
+
+      E O QUE O NASCER LIMPA, SEM SER MUDANÇA À PARTE: o risk-register herdado cita
+      controles que não chegaram ao derivado — RISK-INCUBA-001 apontava para
+      `harness/change-proposals/CP-038-*.yaml` (proposta do molde, não copiada; o controle
+      passa a apontar para o CP-000 deste repositório) e RISK-EXT-001 citava
+      `harness/state/protection-attestation.json` (efêmero por-repositório; removido da
+      lista de controles). O conformance-review herdado citava `CP-039` como consumidor de
+      CONF-005 — proposta do molde que não existe aqui; a disposição vira `accepted` com
+      rationale (o achado nasce com o CP-000 que remove o exemplo).
+
+      POR QUE O RISCO É 'HIGH': remover código e metadado, para além das mudanças nos ADRs,
+      tem efeito no caminho de publicação/release; e desligar a camada externa inta
+      (enquanto persistir) a promessa de verificação fora do repositório fiscalizado. Mas o
+      schema de change-proposal força `human_approval_required: true` — o agente declara, a
+      pessoa decidiu e registrou (07/08/2026).
+
+  required_gates:
+    - metadata-validation
+    - unit-tests
+
+  tests_required:
+    - python ci/validate_all.py
+
+  human_approval_required: true
+  change_mode: pull_request

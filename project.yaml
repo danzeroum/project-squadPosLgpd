@@ -1,0 +1,67 @@
+# Manifesto de identidade do projeto. Completa (não substitui) o pyproject.toml com o que
+# Python não expressa: propósito, domínio, criticidade, donos, governança.
+# Schema: harness/schemas/project.schema.json
+schema_version: "1.0"
+metadata_version: "1.1"   # 1.1: classification deixou de ser texto livre opcional e virou enum obrigatório
+source_of_truth: true
+generated_from: null
+
+project:
+  id: "project-squadposlgpd"
+  name: "project squadPosLgpd"
+  # mold = a casca genérica; derived = o gêmeo de governança de um alvo. O schema exige o bloco
+  # target quando derived e o PROÍbe quando mold: um molde ancorado num alvo específico deixou de
+  # ser genérico, e a genericidade é o produto deste repositório.
+  kind: "derived"
+  type: "business-software"
+  # incubating = nasceu, ainda não fechou a ingestão: as coleções de metadados (capabilities,
+  # components, interfaces, backlog) nascem vazias por construção (CP-000) e só o piso
+  # da ingestão as tolera — o fiscal recusa o vazio sob lifecycle 'active'. Fecha a ingestão,
+  # é vida (ADR-019: vermelho declarado é mapa, não defeito).
+  lifecycle: "incubating"
+  status: "active"
+
+target:
+  repo: "danzeroum/squadPosLgpd"
+  ref: "main"
+  lock_source: "target.lock"
+  code_roots: ["src", "mesa"]
+  test_roots: ["tests", "mesa/tests"]
+  languages: ["javascript", "python", "html"]
+
+business:
+  domain: "lgpd; privacy-data"
+  purpose: >
+    Gêmeo de governança do alvo squadPosLgpd: cadeia multiagente de adequação à LGPD,
+    com acomanhamento contínuo pela WebQA Suite como padrão externo de qualidade.
+  criticality: "high"
+  # Handle de conta, não nome civil nem e-mail pessoal: um handle já satisfaz a finalidade
+  # (saber a quem escalar), e coletar menos é a primeira linha da hierarquia de controle.
+  # Risco com dono "unassigned" é risco sem dono real — ci/audit_governance.py cobra.
+  stakeholders:
+    product_owner: "@danzeroum"
+    technical_owner: "@danzeroum"
+    security_owner: "@danzeroum"
+
+# Declara QUAL padrão e ONDE a versão mora — nunca o número (fonte única fecha o risco H3).
+quality_standard:
+  name: webqa-suite
+  version_source: requirements-qa.txt
+
+governance:
+  default_change_mode: "pull_request"
+  human_approval_required_for:
+    - dependency_update
+    - production_deploy
+    - load
+    - active_discovery
+    - protected_path_change
+  evidence_retention_days: 90
+
+# Enums fechados: "to-be-assessed" era texto livre num bloco opcional — pendência que nenhum
+# fiscal conseguia reprovar. lgpd_relevance é cruzado com governance/data-inventory.yaml
+# (controller.role) por ci/audit_lgpd.py: declarar aqui e tratar dado lá é divergência.
+classification:
+  data_classification: "internal"
+  lgpd_relevance: "none"
+  internet_exposed: false

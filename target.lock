@@ -1,0 +1,24 @@
+# Fonte ÚNICA do SHA do alvo. Nenhum outro arquivo restata este valor — nem project.yaml, nem
+# um metadado, nem um laudo. É a mesma regra de requirements-qa.txt aplicada ao alvo: duas cópias
+# de um número derivam, e a comparação entre "o que o metadado descreve" e "o que o alvo é hoje"
+# passa a mentir sem erro nem aviso.
+#
+# Neste repositório o valor é o SHA do alvo squadPosLgpd (danzeroum), porque este é o DERIVADO:
+# a carcaça do molde ancorada num alvo específico. O /adotar escreve kind:derived e o SHA aqui;
+# o bloco mold_release declara de qual release do molde esta carcaça nasceu.
+#
+# Schema: harness/schemas/target-lock.schema.json
+schema_version: "1.0"
+metadata_version: "1.0"
+source_of_truth: true
+generated_from: null
+
+kind: derived
+target_sha: "c5686ae4d6e5f0b9670cf8706b84241ba031a2a1"
+
+mold_release:
+  repository: danzeroum/project
+  tag: v1.1.0
+  commit_sha: 5eff98bceb4150d329f528288c87d02fba4656f9
+  manifest_path: harness/releases/v1.1.0.manifest.json
+  manifest_sha: da8b95cddce1a6117aebd95ad0364cf209026c17b48a13db19d2657e2bd29aea
